@@ -1,0 +1,22 @@
+tensorflow
+matplotlib
+seaborn
+numpy==1.23.5
+pandas==1.5.3
+scipy==1.10.0
+scikit-learn==1.3.1
+google-cloud-bigquery
+google-cloud-storage
+db-dtypes
+pyarrow
+# Trick to install the version of Tensorflow depending on your processor: darwin == Mac, ARM == M1
+tensorflow
+
+
+# prevent bq 3+ db-dtypes package error when running training from bq
+
+mlflow==2.1.1
+prefect==2.14.9
+
+python-dotenv
+psycopg2-binary
