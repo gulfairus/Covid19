@@ -10,7 +10,7 @@ start = time.perf_counter()
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
-from tensorflow.keras.models import Sequential
+from tensorflow.keras import Sequential, models
 from tensorflow.keras.layers import MaxPooling2D, Dropout, Flatten, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
@@ -25,7 +25,7 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     """
     Initialize the Neural Network with random weights
     """
-    preproc_layer = preprocess_input()
+
     base_model = EfficientNetB7(input_shape = input_shape, include_top = False, weights = 'imagenet')
     base_model.trainable = False
     pooling_layer = MaxPooling2D()
@@ -35,7 +35,6 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     prediction_layer = Dense(4, activation='softmax')
 
     model = models.Sequential([
-        preproc_layer,
         base_model,
         pooling_layer,
         flatten_layer,
