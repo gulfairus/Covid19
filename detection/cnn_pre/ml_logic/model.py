@@ -10,7 +10,7 @@ start = time.perf_counter()
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
-from tensorflow.keras.models import Sequential
+from tensorflow.keras import Sequential, models
 from tensorflow.keras.layers import MaxPooling2D, Dropout, Flatten, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
