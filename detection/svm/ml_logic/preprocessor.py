@@ -10,53 +10,43 @@ import random
 from detection.params import *
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image_dataset_from_directory
+import time
+import pickle
+
 
 def preprocess_data():
-    # train_dir = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/train"
-    # test_dir = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/test"
 
-    # train_datagen = ImageDataGenerator(rescale=1. / 255, dtype='float32')
-    # itr = train_datagen.flow_from_directory(
-    # train_dir,
-    # target_size=(64, 64),
-    # batch_size=20227,
-    # class_mode='categorical')
+    # generate training,testing and validation batches
+    train_dir = TRAIN_DATA_PATH
+    test_dir = TEST_DATA_PATH
 
-    # X_train, y_train = itr.next()
-    # X_train = X_train.reshape(20227, 12288)
-    # df_train = pd.DataFrame(X_train)
-    # df_train['target'] = y_train
+    dgen_train = ImageDataGenerator(#samplewise_center=True,
+                                    #samplewise_std_normalization=True,
+                                    rescale = 1./255,
+                                    validation_split=0.2,
+                                    #rotation_range=20,
+                                    shear_range=0.2,
+                                    zoom_range = 0.2,
+                                    horizontal_flip = False)
+    dgen_validation = ImageDataGenerator(rescale = 1./255)
+    dgen_test = ImageDataGenerator(rescale=1./255)
 
-    # return df_train.shape
+    train_generator = dgen_train.flow_from_directory(train_dir,
+                                                    target_size=(150,150),
+                                                    subset = "training",
+                                                    batch_size = 32,
+                                                    class_mode = "categorical")
 
-    main_dir = "/home/user/code/gulfairus/Covid19/raw_data/cloud/COVID-19_Radiography_Dataset"
-    train_dir = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/train"
-    test_dir = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/test"
-    Categories=['COVID19','NORMAL','OPACITY','PNEUMONIA']
-    flat_data_arr=[] #input array
-    target_arr=[] #output array
-    datadir='IMAGES/'
-    #df_array = np.zeros((20227, 30000))
-    #path which contains all the categories of images
-    for i in Categories[:1]:
+    validation_generator = dgen_train.flow_from_directory(train_dir,
+                                                    target_size=(150,150),
+                                                    subset = "validation",
+                                                    batch_size = 32,
+                                                    class_mode = "categorical")
 
-        print(f'loading... category : {i}')
-        path=os.path.join(main_dir,i)
-        k=0
-        while k<5:
-            for img in os.listdir(path):
-                img_array=imread(os.path.join(path,img)).astype('float32')
-                img_resized=resize(img_array,(64,64,3))
-                #img = tf.keras.utils.array_to_img(img)
-                #array = tf.keras.utils.image.img_to_array(img)
-                flat_data_arr.append(img_resized.flatten())
-                target_arr.append(Categories.index(i))
-                k+=1
-            print(f'loaded category:{i} successfully')
-    flat_data=np.array(flat_data_arr)
-    target=np.array(target_arr)
+    test_generator = dgen_test.flow_from_directory(test_dir,
+                                                    target_size=(150,150),
+                                                    batch_size = 32,
+                                                    class_mode = "categorical")
 
-    return flat_data
 
-a = preprocess_data()
-print(a.shape)
+    return train_generator, validation_generator, test_generator
