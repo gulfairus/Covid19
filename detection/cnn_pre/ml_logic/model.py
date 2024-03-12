@@ -2,7 +2,6 @@ import numpy as np
 import time
 from colorama import Fore, Style
 from typing import Tuple
-import efficientnet.keras as efn
 
 # Timing the TF import
 print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
@@ -12,12 +11,10 @@ from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
+from tensorflow.keras.layers import MaxPooling2D, Dropout, Flatten, Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
-from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.applications.efficientnet import EfficientNetB7, preprocess_input
-from tensorflow.keras.regularizers import l2
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
@@ -31,14 +28,16 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     preproc_layer = preprocess_input()
     base_model = EfficientNetB7(input_shape = input_shape, include_top = False, weights = 'imagenet')
     base_model.trainable = False
-    flatten_layer = layers.Flatten()
-    dense_layer = layers.Dense(512, activation='relu')
-    dropout_layer = layers.Dropout(0.2)
-    prediction_layer = layers.Dense(4, activation='softmax')
+    pooling_layer = MaxPooling2D()
+    flatten_layer = Flatten()
+    dense_layer = Dense(512, activation='relu')
+    dropout_layer = Dropout(0.2)
+    prediction_layer = Dense(4, activation='softmax')
 
     model = models.Sequential([
         preproc_layer,
         base_model,
+        pooling_layer,
         flatten_layer,
         dense_layer,
         dropout_layer,
@@ -56,7 +55,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="squared_hinge", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 
     print("✅ Model compiled")
 
