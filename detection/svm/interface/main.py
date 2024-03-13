@@ -46,7 +46,7 @@ def preprocess() -> None:
     print("✅ preprocess() done \n")
     return
 
-#@mlflow_run
+@mlflow_run
 def train(
         learning_rate=0.0005,
         batch_size = 32,
