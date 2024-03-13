@@ -1,5 +1,6 @@
 """
 Preprocessing data using generators.
+Result a generator with shape (224,224,3)
 """
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -28,19 +29,19 @@ def preprocess_data():
     # Make generators by directories:
     # The classes wiil be the subdirectories
     train_generator = dgen_train.flow_from_directory(train_dir,
-                                                    target_size=(150,150),
+                                                    target_size=(224,224),
                                                     subset = "training",
                                                     batch_size = 32,
                                                     class_mode = "categorical")
 
     validation_generator = dgen_train.flow_from_directory(train_dir,
-                                                    target_size=(150,150),
+                                                    target_size=(224,224),
                                                     subset = "validation",
                                                     batch_size = 32,
                                                     class_mode = "categorical")
 
     test_generator = dgen_test.flow_from_directory(test_dir,
-                                                    target_size=(150,150),
+                                                    target_size=(224,224),
                                                     batch_size = 32,
                                                     class_mode = "categorical")
 
