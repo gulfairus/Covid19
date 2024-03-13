@@ -3,7 +3,6 @@ Preprocessing data using generators.
 """
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 
 def preprocess_data():
