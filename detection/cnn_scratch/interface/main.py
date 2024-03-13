@@ -46,7 +46,7 @@ def preprocess() -> None:
     print("✅ preprocess() done \n")
     return
 
-@mlflow_run
+#@mlflow_run
 def train(
         learning_rate=0.0005,
         batch_size = 32,
@@ -106,7 +106,7 @@ def train(
     return val_accuracy
 
 
-@mlflow_run
+#@mlflow_run
 def evaluate(
         # min_date:str = '2014-01-01',
         # max_date:str = '2015-01-01',
