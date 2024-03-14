@@ -29,23 +29,25 @@ def initialize_model(input_shape: tuple) -> Model:
 
     model = Sequential()
     model.add(Conv2D(32,(3,3), input_shape=(150,150,3)))
+    model.add(Conv2D(32,(3,3), input_shape=(150,150,3)))
+    model.add(Conv2D(32,(3,3), input_shape=(150,150,3)))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
     model.add(Conv2D(64,(3,3),  padding="SAME", activation="relu"))
     model.add(Conv2D(64,(3,3),  padding="SAME", activation="relu"))
     model.add(Conv2D(64,(3,3),  padding="SAME", activation="relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
     model.add(Conv2D(128,(3,3),  padding="SAME", activation="relu"))
     model.add(Conv2D(128,(3,3),  padding="SAME", activation="relu"))
     model.add(Conv2D(128,(3,3),  padding="SAME", activation="relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
     model.add(Conv2D(256,(3,3),  padding="SAME", activation="relu"))
     model.add(Conv2D(256,(3,3),  padding="SAME", activation="relu"))
     model.add(Conv2D(256,(3,3),  padding="SAME", activation="relu"))
     model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.3))
     model.add(Flatten())
     model.add(Dense(512,  activation="relu"))
     model.add(Dropout(0.5))
@@ -99,7 +101,7 @@ def train_model(
     )
 
 
-    print(f"✅ Model trained on rows with min val MAE: {round(np.min(history.history['val_mae']), 2)}")
+    print(f"✅ Model trained ")
 
     return model, history
 
@@ -107,7 +109,7 @@ def train_model(
 def evaluate_model(
         model: Model,
         test_data,
-        batch_size=32
+        batch_size=batch_size
     ) -> Tuple[Model, dict]:
     """
     Evaluate trained model performance on the dataset

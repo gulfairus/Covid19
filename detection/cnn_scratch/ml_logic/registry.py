@@ -2,7 +2,7 @@ import glob
 import os
 import time
 import pickle
-
+import tensorflow as tf
 from colorama import Fore, Style
 from tensorflow import keras
 from google.cloud import storage

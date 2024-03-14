@@ -108,6 +108,7 @@ def train(
 
 #@mlflow_run
 def evaluate(
+        batch_size = 32,
         # min_date:str = '2014-01-01',
         # max_date:str = '2015-01-01',
         stage: str = "Production"
@@ -123,7 +124,7 @@ def evaluate(
 
     train_generator, validation_generator, test_generator = preprocess_data()
 
-    metrics_dict = evaluate_model(model=model, test_data=test_generator)
+    metrics_dict = evaluate_model(model=model, test_data=test_generator, batch_size=batch_size)
     accuracy = metrics_dict["accuracy"]
 
     params = dict(
