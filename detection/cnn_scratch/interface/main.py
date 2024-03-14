@@ -50,7 +50,7 @@ def preprocess() -> None:
 def train(
         learning_rate=0.0005,
         batch_size = 32,
-        patience = 3,
+        patience = 2,
         epochs=50
     ) -> float:
 
