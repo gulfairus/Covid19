@@ -7,8 +7,11 @@ reinstall_package:
 run_preprocess_svm:
 	python -c 'from detection.svm.interface.main import preprocess; preprocess()'
 
-run_train:
-	python -c 'from taxifare.interface.main import train; train()'
+run_train_svm:
+	python -c 'from detection.svm.interface.main import train; train()'
+
+run_train_cnn_scratch:
+	python -c 'from detection.cnn_scratch.interface.main import train; train()'
 
 run_pred:
 	python -c 'from taxifare.interface.main import pred; pred()'
