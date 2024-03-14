@@ -109,7 +109,7 @@ def train_model(
 def evaluate_model(
         model: Model,
         test_data,
-        batch_size=batch_size
+        batch_size
     ) -> Tuple[Model, dict]:
     """
     Evaluate trained model performance on the dataset
