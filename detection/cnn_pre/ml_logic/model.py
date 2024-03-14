@@ -7,15 +7,12 @@ from typing import Tuple
 print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
 start = time.perf_counter()
 
-from tensorflow import keras
-from keras import Model, Sequential, layers, regularizers, optimizers
-from keras.callbacks import EarlyStopping
-from tensorflow.keras import Sequential, models
-from tensorflow.keras.layers import MaxPooling2D, Dropout, Flatten, Dense
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.models import Model, load_model
-from tensorflow.keras.applications.efficientnet import EfficientNetB7, preprocess_input
-
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
+from tensorflow.keras import optimizers
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.applications.efficientnet import EfficientNetB7
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
@@ -26,22 +23,23 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     Initialize the Neural Network with random weights
     """
 
-    base_model = EfficientNetB7(input_shape = input_shape, include_top = False, weights = 'imagenet')
-    base_model.trainable = False
-    pooling_layer = MaxPooling2D()
-    flatten_layer = Flatten()
-    dense_layer = Dense(512, activation='relu')
-    dropout_layer = Dropout(0.2)
-    prediction_layer = Dense(4, activation='softmax')
+    eff_model = EfficientNetB7(input_shape = input_shape, include_top = False, weights = 'imagenet')
 
-    model = models.Sequential([
-        base_model,
-        pooling_layer,
-        flatten_layer,
-        dense_layer,
-        dropout_layer,
-        prediction_layer
-    ])
+    for layer in eff_model.layers:
+      layer.trainable = False
+
+    model = Sequential()
+    model.add(eff_model)
+    model.add(MaxPooling2D(2))
+    model.add(Flatten())
+    model.add(BatchNormalization())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(16, activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(4, activation='softmax'))
 
     print("✅ Model initialized")
     print(model.summary)
