@@ -8,15 +8,14 @@ from typing import Tuple
 print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
 start = time.perf_counter()
 
-from tensorflow import keras
-from keras import Model, Sequential, layers, regularizers, optimizers
-from keras.callbacks import EarlyStopping
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.models import Model, load_model
+
+from tensorflow.keras.models import Model
+from tensorflow.keras import Sequential, layers
+from tensorflow.keras import optimizers
+from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.layers.experimental.preprocessing import Rescaling
-from tensorflow.keras.losses import SparseCategoricalCrossentropy
+
+
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
@@ -71,10 +70,10 @@ def compile_model(model: Model, learning_rate) -> Model:
 def train_model(
         model: Model,
         train_data,
-        batch_size,
-        patience,
+        batch_size=16,
+        patience=5,
         validation_data=None,
-        epochs=None) -> Tuple[Model, dict]:
+        epochs=30) -> Tuple[Model, dict]:
     """
     Fit the model and return a tuple (fitted_model, history)
     """
