@@ -84,7 +84,7 @@ ML_DIR=~/.lewagon/covid19
 
 show_sources_all:
 	-ls -laR ~/.lewagon/mlops/data
-	-gsutil ls gs://${BUCKET_NAME}/
+	-gsutil ls gs://${BUCKET_NAME}/models
 
 reset_local_files:
 	rm -rf ${ML_DIR}
