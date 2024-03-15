@@ -80,17 +80,21 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_scratch")
-        local_model_paths = glob.glob(f"{local_model_directory}/*")
+        # local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "detection/cnn_scratch/model")
+        # print(f"local_model_director: {local_model_directory}")
+        # local_model_paths = glob.glob(f"{local_model_directory}/*")
+        # print(local_model_paths)
 
-        if not local_model_paths:
-            return None
+        # if not local_model_paths:
+        #     return None
 
-        most_recent_model_path_on_disk = sorted(local_model_paths)[-1]
+        # most_recent_model_path_on_disk = sorted(local_model_paths)[-1]
 
-        print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
+        # print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
 
-        latest_model = keras.models.load_model(most_recent_model_path_on_disk)
+        latest_model = keras.models.load_model('/home/remo/code/victor-ocn/covid19-project/covid19/Covid19/detection/cnn_scratch/model/covidprojectmodel.h5')
+    #
+            #most_recent_model_path_on_disk)
 
         print("✅ Model loaded from local disk")
 
@@ -101,20 +105,29 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/cnn_scratch"))
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="models/cnn_scratch"))
+        #print(f"blobs: {blobs}")
+
 
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
-            latest_model_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, latest_blob.name)
+            #print(f"latest_blob: {latest_blob}")
+            latest_model_path_to_save = os.path.join(os.getcwd(), 'detection','cnn_scratch', 'model',latest_blob.name.split('/')[-1])
+            #print(f"latest_model_path_to_save: {latest_model_path_to_save}")
+            #print(os.getcwd())
             latest_blob.download_to_filename(latest_model_path_to_save)
+
+            #latest_model_path_to_save = 'gs://covid19_lewagon/models/cnn_scratch/20240314-182616.h5'
 
             latest_model = keras.models.load_model(latest_model_path_to_save)
 
             print("✅ Latest model downloaded from cloud storage")
 
+            latest_model = keras.models.load_model('/home/remo/code/victor-ocn/covid19-project/covid19/Covid19/detection/cnn_scratch/model/covidprojectmodel.h5')
+
             return latest_model
         except:
-            print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
+            print('Error to download model')
 
             return None
 

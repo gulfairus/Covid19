@@ -8,17 +8,15 @@ print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
 start = time.perf_counter()
 
 import tensorflow as tf
-from tensorflow.keras.models import Sequential
+from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras import optimizers
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.applications.efficientnet import EfficientNetB7
-from tensorflow.keras.models import Model, load_model
+
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
-
-
 
 def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     """
@@ -37,10 +35,13 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     model.add(BatchNormalization())
     model.add(Dense(128, activation='relu'))
     model.add(Dropout(0.3))
+    model.add(BatchNormalization())
     model.add(Dense(64, activation='relu'))
     model.add(Dropout(0.3))
-    model.add(Dense(16, activation='relu'))
+    model.add(BatchNormalization())
+    model.add(Dense(32, activation='relu'))
     model.add(Dropout(0.5))
+    model.add(BatchNormalization())
     model.add(Dense(4, activation='softmax'))
 
     print("✅ Model initialized")
@@ -63,8 +64,8 @@ def compile_model(model: Model, learning_rate) -> Model:
 def train_model(
         model: Model,
         train_data,
-        batch_size,
-        patience,
+        batch_size=16,
+        patience=5,
         validation_data=None,
         epochs=None) -> Tuple[Model, dict]:
     """

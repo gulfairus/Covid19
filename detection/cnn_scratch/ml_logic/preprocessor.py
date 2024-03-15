@@ -1,21 +1,14 @@
-import pandas as pd
-import os
-from skimage.transform import resize
-from skimage.io import imread
-import numpy as np
-from google.cloud import storage
-import requests
 from io import BytesIO
-import random
-from detection.params import *
+from PIL import Image
+import tensorflow as tf
+from tensorflow.keras.utils import img_to_array
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.preprocessing import image_dataset_from_directory
-import time
-import pickle
 
 
 def preprocess_data():
-
+    """
+    Prepreocess images in DataSet
+    """
     # generate training,testing and validation batches
     train_dir = TRAIN_DATA_PATH
     test_dir = TEST_DATA_PATH
@@ -50,3 +43,17 @@ def preprocess_data():
 
 
     return train_generator, validation_generator, test_generator
+
+def preprocess_features(x):
+    """
+    Preprocess new images to predict.
+    Input - binary by api query.
+    Output - Generator
+    """
+    stream = BytesIO(x)
+    img = Image.open(stream)
+    image = img.resize((150,150))
+    array = img_to_array(image)
+    tensor = tf.expand_dims(array, axis=0)
+    #print(f"tensor: {tensor}")
+    return tensor

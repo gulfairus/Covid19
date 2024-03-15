@@ -1,32 +1,37 @@
 import base64
 import requests
+from io import StringIO
 import streamlit as st
+
 
 # Título da aplicação
 st.title('Envio de imagem como payload para API')
 
 # Criação do uploader de arquivos
-uploaded_file = st.file_uploader("Escolha uma imagem...", type=['jpg', 'png'])
+uploaded_file = st.file_uploader("Escolha uma imagem...", type=['.jpg', '.png'])
+
 
 if uploaded_file is not None:
-    # Ler a imagem carregada e convertê-la em base64sx
-    encoded_image = base64.b64encode(uploaded_file.getvalue()).decode('utf-8')
-    
-    # Construir o payload da requisição, incluindo a imagem codificada
-    payload = {
-        "image": encoded_image,
-        # Você pode adicionar mais campos ao payload se necessário
-    }
-    
-    # URL da API para a qual você deseja enviar a imagem
-    api_url = "https://suaapi.com/seuendpoit"
+    st.image(uploaded_file)
 
-    # Enviar a imagem para a API
+    encoded_image = base64.b64encode(uploaded_file.getvalue()).decode('utf-8')
+    #print(encoded_image)
+
+    payload = {
+         "image": encoded_image
+         }
+
+    api_url = "http://127.0.0.1:8000/predict/"
+
     response = requests.post(api_url, json=payload)
-    
-    # Checar se a requisição foi bem-sucedida
+
     if response.status_code == 200:
-        st.success('Imagem enviada com sucesso!')
-        # Aqui você pode processar e mostrar a resposta da API
+        if response.json()['status'] == 'fail':
+            st.error('Falha ao decodificar a imagem')
+        else:
+            st.success('Imagem enviada com sucesso!')
+            st.write(f"Class: {response.json()['class']}")
+            st.write(f"Probability: {response.json()['probability']}")
+
     else:
         st.error('Falha ao enviar imagem.')
