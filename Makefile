@@ -43,6 +43,18 @@ test_kitt:
 	@pytest tests/cloud_training -c "./tests/pytest_kitt.ini" 2>&1 > tests/cloud_training/test_output.txt || true
 	@echo "\n 🙏 Please: \n git add tests \n git commit -m 'checkpoint' \n ggpush"
 
+
+test_mlflow_config:
+	@pytest \
+	tests/lifecycle/test_mlflow.py::TestMlflow::test_model_target_is_mlflow \
+	tests/lifecycle/test_mlflow.py::TestMlflow::test_mlflow_experiment_is_not_null \
+	tests/lifecycle/test_mlflow.py::TestMlflow::test_mlflow_model_name_is_not_null
+
+test_prefect_config:
+	@pytest \
+	tests/lifecycle/test_prefect.py::TestPrefect::test_prefect_flow_name_is_not_null \
+	tests/lifecycle/test_prefect.py::TestPrefect::test_prefect_log_level_is_warning
+
 test_preprocess:
 	@pytest tests/cloud_training/test_main.py::TestMain::test_route_preprocess
 
