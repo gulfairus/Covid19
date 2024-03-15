@@ -56,7 +56,7 @@ def save_model(model: keras.Model = None) -> None:
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
-        blob = bucket.blob(f"models/cnn_tl/{model_filename}")
+        blob = bucket.blob(f"models/cnn_pre/{model_filename}")
         blob.upload_from_filename(model_path)
 
         print("✅ Model saved to GCS")
@@ -80,7 +80,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_tl")
+        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_pre")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -101,7 +101,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/cnn_tl"))
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/cnn_pre"))
 
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)

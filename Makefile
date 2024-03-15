@@ -13,8 +13,8 @@ run_train_svm:
 run_train_cnn_scratch:
 	python -c 'from detection.cnn_scratch.interface.main import train; train()'
 
-run_train_cnn_tl:
-	python -c 'from detection.cnn_tl.interface.main import train; train()'
+run_train_cnn_pre:
+	python -c 'from detection.cnn_pre.interface.main import train; train()'
 
 run_train_transformer:
 	python -c 'from detection.transformer.interface.main import train; train()'
@@ -92,9 +92,9 @@ reset_local_files:
 	mkdir ~/.lewagon/covid19/data/raw
 	mkdir ~/.lewagon/covid19/data/processed
 	mkdir ~/.lewagon/covid19/training_outputs
-	mkdir ~/.lewagon/covid19/training_outputs/metrics/cnn_tl
-	mkdir ~/.lewagon/covid19/training_outputs/models/cnn_tl
-	mkdir ~/.lewagon/covid19/training_outputs/params/cnn_tl
+	mkdir ~/.lewagon/covid19/training_outputs/metrics/cnn_pre
+	mkdir ~/.lewagon/covid19/training_outputs/models/cnn_pre
+	mkdir ~/.lewagon/covid19/training_outputs/params/cnn_pre
 	mkdir ~/.lewagon/covid19/training_outputs/metrics/cnn_scratch
 	mkdir ~/.lewagon/covid19/training_outputs/models/cnn_scratch
 	mkdir ~/.lewagon/covid19/training_outputs/params/cnn_scratch
