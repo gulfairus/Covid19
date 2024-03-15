@@ -12,7 +12,7 @@ from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization, experimental
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers.experimental.preprocessing import Rescaling
