@@ -27,11 +27,11 @@ GAR_MEMORY = os.environ.get("GAR_MEMORY")
 LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "covid19", "data")
 LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "covid19", "training_outputs")#
 
-#TRAIN_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train"
-#TEST_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/test"
+TRAIN_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train"
+TEST_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/test"
 
-TRAIN_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/train"
-TEST_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/test"
+# TRAIN_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/train"
+# TEST_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/test"
 
 
 
