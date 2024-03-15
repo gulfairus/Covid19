@@ -16,7 +16,7 @@ import tensorflow
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization, experimental, Rescaling
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
-from tensorflow.keras.layers.experimental.preprocessing import Rescaling
+#from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 
 end = time.perf_counter()
