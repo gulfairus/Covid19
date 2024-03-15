@@ -56,7 +56,7 @@ def save_model(model: keras.Model = None) -> None:
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
-        blob = bucket.blob(f"models/svm/{model_filename}")
+        blob = bucket.blob(f"training/cnn_scratch/models/{model_filename}")
         blob.upload_from_filename(model_path)
 
         print("✅ Model saved to GCS")
@@ -80,7 +80,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_scratch")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -101,7 +101,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model"))
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/cnn_scratch"))
 
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
@@ -117,6 +117,31 @@ def load_model(stage="Production") -> keras.Model:
             print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
 
             return None
+
+    elif MODEL_TARGET == "mlflow":
+        print(Fore.BLUE + f"\nLoad [{stage}] model from MLflow..." + Style.RESET_ALL)
+
+        # Load model from MLflow
+        model = None
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+        client = MlflowClient()
+
+        try:
+            model_versions = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[stage])
+            model_uri = model_versions[0].source
+
+            assert model_uri is not None
+        except:
+            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {stage}")
+
+            return None
+
+        model = mlflow.tensorflow.load_model(model_uri=model_uri)
+
+        print("✅ Model loaded from MLflow")
+        return model
+    else:
+        return None
 
 def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
     """

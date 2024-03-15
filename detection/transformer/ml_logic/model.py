@@ -10,7 +10,7 @@ start = time.perf_counter()
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
-from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import Model, load_model
@@ -21,7 +21,7 @@ print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 
 
-def initialize_model(input_shape: int = 224)) -> Model:
+def initialize_model(input_shape: tuple) -> Model:
     """
     Initialize the Neural Network with random weights
     """
@@ -38,8 +38,13 @@ def initialize_model(input_shape: int = 224)) -> Model:
     model = Sequential()
     model.add(vit_model)
     model.add(Flatten())
+    model.add(BatchNormalization())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.3))
+    model.add(Dense(64, activation='relu'))
+    model.add(Dropout(0.3))
     model.add(Dense(32, activation='relu'))
-    model.add(Dropout(0.2))
+    model.add(Dropout(0.5))
     model.add(Dense(4, activation='softmax'))
 
     print("✅ Model initialized")

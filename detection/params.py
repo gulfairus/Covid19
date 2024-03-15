@@ -30,6 +30,11 @@ LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "covid1
 TRAIN_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train"
 TEST_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/test"
 
+# TRAIN_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/train"
+# TEST_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/test"
+
+
+
 
 COLUMN_NAMES_RAW = ['fare_amount','pickup_datetime', 'pickup_longitude', 'pickup_latitude', 'dropoff_longitude', 'dropoff_latitude', 'passenger_count']
 

@@ -22,6 +22,8 @@ import requests
 from io import BytesIO
 import random
 from detection.params import *
+import keras
+from tensorflow import keras
 
 
 from detection.transformer.ml_logic.data import load_data_to_bq
