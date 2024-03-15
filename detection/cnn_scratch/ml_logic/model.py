@@ -12,10 +12,11 @@ from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
+import tensorflow
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization, experimental, Rescaling
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
-#from tensorflow.keras.layers.experimental.preprocessing import Rescaling
+from tensorflow.keras.layers.experimental.preprocessing import Rescaling
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 
 end = time.perf_counter()
@@ -29,27 +30,28 @@ def initialize_model(input_shape: tuple) -> Model:
     """
 
     model = Sequential()
-    model.add(Rescaling(1./255, input_shape=input_shape))
+    model.add(Conv2D(32,(5,5), padding="SAME", activation="relu", input_shape=(150,150,3)))
+    #model.add(Rescaling(1./255, input_shape=input_shape))
 
-    model.add(layers.Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
-    model.add(layers.MaxPooling2D(2,2))
-    model.add(layers.Dropout(0.2))
+    model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(2,2))
+    model.add(Dropout(0.2))
 
-    model.add(layers.Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(layers.MaxPooling2D(2,2))
-    model.add(layers.Dropout(0.2))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2,2))
+    model.add(Dropout(0.2))
 
-    model.add(layers.Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(layers.MaxPooling2D(2))
-    model.add(layers.Dropout(0.2))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(Dropout(0.2))
 
-    model.add(layers.Flatten())
+    model.add(Flatten())
 
-    model.add(layers.Dense(128, activation='relu'))
-    model.add(layers.BatchNormalization())
-    model.add(layers.Dropout(0.5))
+    model.add(Dense(128, activation='relu'))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.5))
 
-    model.add(layers.Dense(4, activation='softmax'))
+    model.add(Dense(4, activation='softmax'))
 
     print("✅ Model initialized")
     print(model.summary)
