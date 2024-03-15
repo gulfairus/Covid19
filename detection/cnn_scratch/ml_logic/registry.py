@@ -56,7 +56,7 @@ def save_model(model: keras.Model = None) -> None:
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
-        blob = bucket.blob(f"models/cnn_scratch/{model_filename}")
+        blob = bucket.blob(f"training/cnn_scratch/models/{model_filename}")
         blob.upload_from_filename(model_path)
 
         print("✅ Model saved to GCS")

@@ -22,13 +22,13 @@ def save_results(params: dict, metrics: dict) -> None:
 
     # Save params locally
     if params is not None:
-        params_path = os.path.join(LOCAL_REGISTRY_PATH, "params", timestamp + ".pickle")
+        params_path = os.path.join(LOCAL_REGISTRY_PATH, "params/svm", timestamp + ".pickle")
         with open(params_path, "wb") as file:
             pickle.dump(params, file)
 
     # Save metrics locally
     if metrics is not None:
-        metrics_path = os.path.join(LOCAL_REGISTRY_PATH, "metrics", timestamp + ".pickle")
+        metrics_path = os.path.join(LOCAL_REGISTRY_PATH, "metrics/svm", timestamp + ".pickle")
         with open(metrics_path, "wb") as file:
             pickle.dump(metrics, file)
 
@@ -45,7 +45,7 @@ def save_model(model: keras.Model = None) -> None:
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models/svm", f"{timestamp}.h5")
     model.save(model_path)
 
     print("✅ Model saved locally")
@@ -80,7 +80,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models/svm")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -101,7 +101,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model"))
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/svm"))
 
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
@@ -117,6 +117,31 @@ def load_model(stage="Production") -> keras.Model:
             print(f"\n❌ No model found in GCS bucket {BUCKET_NAME}")
 
             return None
+
+    elif MODEL_TARGET == "mlflow":
+        print(Fore.BLUE + f"\nLoad [{stage}] model from MLflow..." + Style.RESET_ALL)
+
+        # Load model from MLflow
+        model = None
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+        client = MlflowClient()
+
+        try:
+            model_versions = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[stage])
+            model_uri = model_versions[0].source
+
+            assert model_uri is not None
+        except:
+            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {stage}")
+
+            return None
+
+        model = mlflow.tensorflow.load_model(model_uri=model_uri)
+
+        print("✅ Model loaded from MLflow")
+        return model
+    else:
+        return None
 
 def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
     """
