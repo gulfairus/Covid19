@@ -13,6 +13,8 @@ from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, Batch
 from tensorflow.keras import optimizers
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.applications.efficientnet import EfficientNetB7
+from tensorflow.keras.models import Model, load_model
+
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
