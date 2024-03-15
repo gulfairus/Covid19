@@ -13,6 +13,12 @@ run_train_svm:
 run_train_cnn_scratch:
 	python -c 'from detection.cnn_scratch.interface.main import train; train()'
 
+run_train_cnn_tl:
+	python -c 'from detection.cnn_tl.interface.main import train; train()'
+
+run_train_transformer:
+	python -c 'from detection.transformer.interface.main import train; train()'
+
 run_pred:
 	python -c 'from taxifare.interface.main import pred; pred()'
 
@@ -78,11 +84,7 @@ ML_DIR=~/.lewagon/covid19
 
 show_sources_all:
 	-ls -laR ~/.lewagon/mlops/data
-	-bq ls ${BQ_DATASET}
-	-bq show ${BQ_DATASET}.processed_1k
-	-bq show ${BQ_DATASET}.processed_200k
-	-bq show ${BQ_DATASET}.processed_all
-	-gsutil ls gs://${BUCKET_NAME}
+	-gsutil ls gs://${BUCKET_NAME}/
 
 reset_local_files:
 	rm -rf ${ML_DIR}
@@ -90,25 +92,22 @@ reset_local_files:
 	mkdir ~/.lewagon/covid19/data/raw
 	mkdir ~/.lewagon/covid19/data/processed
 	mkdir ~/.lewagon/covid19/training_outputs
-	mkdir ~/.lewagon/covid19/training_outputs/metrics
-	mkdir ~/.lewagon/covid19/training_outputs/models
-	mkdir ~/.lewagon/covid19/training_outputs/params
+	mkdir ~/.lewagon/covid19/training_outputs/metrics/cnn_tl
+	mkdir ~/.lewagon/covid19/training_outputs/models/cnn_tl
+	mkdir ~/.lewagon/covid19/training_outputs/params/cnn_tl
+	mkdir ~/.lewagon/covid19/training_outputs/metrics/cnn_scratch
+	mkdir ~/.lewagon/covid19/training_outputs/models/cnn_scratch
+	mkdir ~/.lewagon/covid19/training_outputs/params/cnn_scratch
+	mkdir ~/.lewagon/covid19/training_outputs/metrics/transformer
+	mkdir ~/.lewagon/covid19/training_outputs/models/transformer
+	mkdir ~/.lewagon/covid19/training_outputs/params/transformer
+	mkdir ~/.lewagon/covid19/training_outputs/metrics/xgboost
+	mkdir ~/.lewagon/covid19/training_outputs/models/xgboost
+	mkdir ~/.lewagon/covid19/training_outputs/params/xgboost
+	mkdir ~/.lewagon/covid19/training_outputs/metrics/svm
+	mkdir ~/.lewagon/covid19/training_outputs/models/svm
+	mkdir ~/.lewagon/covid19/training_outputs/params/svm
 
-reset_local_files_with_csv_solutions: reset_local_files
-	-curl ${HTTPS_DIR}solutions/data_query_fixture_2009-01-01_2015-01-01_1k.csv > ${ML_DIR}/data/raw/query_2009-01-01_2015-01-01_1k.csv
-	-curl ${HTTPS_DIR}solutions/data_query_fixture_2009-01-01_2015-01-01_200k.csv > ${ML_DIR}/data/raw/query_2009-01-01_2015-01-01_200k.csv
-	-curl ${HTTPS_DIR}solutions/data_query_fixture_2009-01-01_2015-01-01_all.csv > ${ML_DIR}/data/raw/query_2009-01-01_2015-01-01_all.csv
-	-curl ${HTTPS_DIR}solutions/data_processed_fixture_2009-01-01_2015-01-01_1k.csv > ${ML_DIR}/data/processed/processed_2009-01-01_2015-01-01_1k.csv
-	-curl ${HTTPS_DIR}solutions/data_processed_fixture_2009-01-01_2015-01-01_200k.csv > ${ML_DIR}/data/processed/processed_2009-01-01_2015-01-01_200k.csv
-	-curl ${HTTPS_DIR}solutions/data_processed_fixture_2009-01-01_2015-01-01_all.csv > ${ML_DIR}/data/processed/processed_2009-01-01_2015-01-01_all.csv
-
-reset_bq_files:
-	-bq rm --project_id ${GCP_PROJECT} ${BQ_DATASET}.processed_1k
-	-bq rm --project_id ${GCP_PROJECT} ${BQ_DATASET}.processed_200k
-	-bq rm --project_id ${GCP_PROJECT} ${BQ_DATASET}.processed_all
-	-bq mk --sync --project_id ${GCP_PROJECT} --location=${BQ_REGION} ${BQ_DATASET}.processed_1k
-	-bq mk --sync --project_id ${GCP_PROJECT} --location=${BQ_REGION} ${BQ_DATASET}.processed_200k
-	-bq mk --sync --project_id ${GCP_PROJECT} --location=${BQ_REGION} ${BQ_DATASET}.processed_all
 
 #reset_gcs_files:
 #	-gsutil rm -r gs://${BUCKET_NAME}

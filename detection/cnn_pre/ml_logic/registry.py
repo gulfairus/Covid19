@@ -22,13 +22,13 @@ def save_results(params: dict, metrics: dict) -> None:
 
     # Save params locally
     if params is not None:
-        params_path = os.path.join(LOCAL_REGISTRY_PATH, "params", timestamp + ".pickle")
+        params_path = os.path.join(LOCAL_REGISTRY_PATH, "params/cnn_tl", timestamp + ".pickle")
         with open(params_path, "wb") as file:
             pickle.dump(params, file)
 
     # Save metrics locally
     if metrics is not None:
-        metrics_path = os.path.join(LOCAL_REGISTRY_PATH, "metrics", timestamp + ".pickle")
+        metrics_path = os.path.join(LOCAL_REGISTRY_PATH, "metrics/cnn_tl", timestamp + ".pickle")
         with open(metrics_path, "wb") as file:
             pickle.dump(metrics, file)
 
@@ -45,7 +45,7 @@ def save_model(model: keras.Model = None) -> None:
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_tl", f"{timestamp}.h5")
     model.save(model_path)
 
     print("✅ Model saved locally")
@@ -56,7 +56,7 @@ def save_model(model: keras.Model = None) -> None:
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
-        blob = bucket.blob(f"models/svm/{model_filename}")
+        blob = bucket.blob(f"models/cnn_tl/{model_filename}")
         blob.upload_from_filename(model_path)
 
         print("✅ Model saved to GCS")
@@ -80,7 +80,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_tl")
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -101,7 +101,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model"))
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/cnn_tl"))
 
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
