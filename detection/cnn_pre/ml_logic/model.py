@@ -21,7 +21,7 @@ print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 
 
-def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
+def initialize_model(input_shape: tuple = None) -> Model:
     """
     Initialize the Neural Network with random weights
     """
@@ -48,7 +48,7 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     inputs = Input(shape=input_shape)
     base_model = EfficientNetB7(include_top=False, input_tensor=inputs, weights="imagenet")
     base_model.trainable = False
-    x = preprocess_input(x)
+    x = preprocess_input(inputs)
     x = base_model(x, training=False)
     x = GlobalAveragePooling2D()(x)
     x = Dropout(0.2)(x)
