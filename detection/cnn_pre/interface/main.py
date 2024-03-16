@@ -7,8 +7,8 @@ from dateutil.parser import parse
 
 import pandas as pd
 import os
-from skimage.transform import resize
-from skimage.io import imread
+# from skimage.transform import resize
+# from skimage.io import imread
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import svm
