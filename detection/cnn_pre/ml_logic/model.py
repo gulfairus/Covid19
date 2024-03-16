@@ -101,7 +101,7 @@ def train_model(
     )
 
 
-    print(f"✅ Model trained on rows with min val MAE: {round(np.min(history.history['val_mae']), 2)}")
+    print(f"✅ Model trained")
 
     return model, history
 
