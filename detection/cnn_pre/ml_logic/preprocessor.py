@@ -4,8 +4,8 @@ Preprocessing data using generators.
 
 import pandas as pd
 import os
-from skimage.transform import resize
-from skimage.io import imread
+# from skimage.transform import resize
+# from skimage.io import imread
 import numpy as np
 from google.cloud import storage
 import requests
