@@ -66,7 +66,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy", "F1score"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy", "f1_score"])
 
     print("✅ Model compiled")
 
