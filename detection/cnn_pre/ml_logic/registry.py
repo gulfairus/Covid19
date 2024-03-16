@@ -45,7 +45,7 @@ def save_model(model: keras.Model = None) -> None:
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_tl", f"{timestamp}.h5")
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models/cnn_pre", f"{timestamp}.h5")
     model.save(model_path)
 
     print("✅ Model saved locally")
