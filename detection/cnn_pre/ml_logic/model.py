@@ -45,7 +45,7 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     # model.add(Dropout(0.5))
     # model.add(Dense(4, activation='softmax'))
 
-    inputs = Input(shape=(input_shape, 3))
+    inputs = Input(shape=input_shape)
     base_model = EfficientNetB7(include_top=False, input_tensor=inputs, weights="imagenet")
     base_model.trainable = False
     x = preprocess_input(x)
