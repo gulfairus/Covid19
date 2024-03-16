@@ -101,6 +101,8 @@ def train_model(
     )
 
 
+
+
     print(f"✅ Model trained")
 
     return model, history

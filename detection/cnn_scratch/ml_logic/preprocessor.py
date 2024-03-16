@@ -17,6 +17,8 @@ import pickle
 def preprocess_data():
 
     # generate training,testing and validation batches
+
+
     train_dir = TRAIN_DATA_PATH
     test_dir = TEST_DATA_PATH
 

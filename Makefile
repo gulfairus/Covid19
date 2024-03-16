@@ -95,7 +95,7 @@ ML_DIR=~/.lewagon/covid19
 #GS_DIR=gs://datascience-mlops/taxi-fare-ny
 
 show_sources_all:
-	-ls -laR ~/.lewagon/mlops/data
+	-ls -laR ~/.lewagon/covid19/*
 	-gsutil ls gs://${BUCKET_NAME}/models
 
 reset_local_files:
