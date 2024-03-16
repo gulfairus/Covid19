@@ -9,11 +9,12 @@ start = time.perf_counter()
 
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
+from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Input, GlobalAveragePooling2D
 from tensorflow.keras import optimizers
 from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.applications.efficientnet import EfficientNetB7
+from tensorflow.keras.applications.efficientnet import EfficientNetB7, preprocess_input
 from tensorflow.keras.models import Model, load_model
+
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
@@ -25,23 +26,34 @@ def initialize_model(input_shape: tuple = (150,150,3)) -> Model:
     Initialize the Neural Network with random weights
     """
 
-    eff_model = EfficientNetB7(input_shape = input_shape, include_top = False, weights = 'imagenet')
+    # eff_model = EfficientNetB7(input_shape = input_shape, include_top = False, weights = 'imagenet')
 
-    for layer in eff_model.layers:
-      layer.trainable = False
 
-    model = Sequential()
-    model.add(eff_model)
-    model.add(MaxPooling2D(2))
-    model.add(Flatten())
-    model.add(BatchNormalization())
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.3))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.3))
-    model.add(Dense(16, activation='relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(4, activation='softmax'))
+    # for layer in eff_model.layers:
+    #   layer.trainable = False
+
+    # model = Sequential()
+    # model.add(eff_model)
+    # model.add(MaxPooling2D(2))
+    # model.add(Flatten())
+    # model.add(BatchNormalization())
+    # model.add(Dense(128, activation='relu'))
+    # model.add(Dropout(0.3))
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dropout(0.3))
+    # model.add(Dense(16, activation='relu'))
+    # model.add(Dropout(0.5))
+    # model.add(Dense(4, activation='softmax'))
+
+    inputs = Input(shape=(input_shape, 3))
+    base_model = EfficientNetB7(include_top=False, input_tensor=inputs, weights="imagenet")
+    base_model.trainable = False
+    x = preprocess_input(x)
+    x = base_model(x, training=False)
+    x = GlobalAveragePooling2D()(x)
+    x = Dropout(0.2)(x)
+    outputs = Dense(4, activation="softmax")(x)
+    model = Model(inputs=inputs,outputs=outputs)
 
     print("✅ Model initialized")
     print(model.summary)
@@ -54,7 +66,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy", "F1score"])
 
     print("✅ Model compiled")
 
