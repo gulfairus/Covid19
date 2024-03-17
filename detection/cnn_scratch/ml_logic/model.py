@@ -64,7 +64,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy", "f1_score"])
 
     print("✅ Model compiled")
 
@@ -115,7 +115,7 @@ def evaluate_model(
     Evaluate trained model performance on the dataset
     """
 
-    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
+    print(Fore.BLUE + f"\nEvaluating model ..." + Style.RESET_ALL)
 
     if model is None:
         print(f"\n❌ No model to evaluate")
