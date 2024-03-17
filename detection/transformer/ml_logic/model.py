@@ -11,7 +11,7 @@ start = time.perf_counter()
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
-from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization
+from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Input
 from tensorflow.keras import optimizers
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.models import Model, load_model
@@ -24,9 +24,9 @@ print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 def initialize_model(input_shape: tuple) -> Model:
     """
-    Initialize the Neural Network with random weights
+    # Initialize the Neural Network with random weights
     """
-    vit_model = vit.vit_b16(image_size=150,
+    vit_model = vit.vit_b32(image_size=input_shape,
                             #image_size=input_shape,
                          activation='relu',
                          pretrained=True,
@@ -34,26 +34,28 @@ def initialize_model(input_shape: tuple) -> Model:
                          pretrained_top=False,
                          classes=4)
 
-    for layer in vit_model.layers:
-        layer.trainable = False
-
-    model = Sequential()
-    model.add(vit_model)
-    model.add(Flatten())
-    # model.add(BatchNormalization())
+    # for layer in vit_model.layers:
+    #     layer.trainable = False
+    inputs = Input(shape=input_shape)
+    vit_model.trainable = False
+    x = vit_model(inputs)
+    #model.add(Flatten())
+    x = BatchNormalization()(x)
+    # model.add(Dense(512, activation='relu'))
+    # model.add(Dropout(0.3))
+    # model.add(Dense(256, activation='relu'))
+    # model.add(Dropout(0.3))
     # model.add(Dense(128, activation='relu'))
     # model.add(Dropout(0.3))
-    # model.add(Dense(64, activation='relu'))
-    # model.add(Dropout(0.3))
-    # model.add(Dense(32, activation='relu'))
-
-    model.add(Dense(256, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(Dense(4, activation='softmax'))
+    # model.add(Dense(4, activation='softmax'))
+    x = Dense(512, activation='relu')(x)
+    x = Dropout(0.3)(x)
+    x = Dense(256, activation='relu')(x)
+    x = Dropout(0.3)(x)
+    x = Dense(128, activation='relu')(x)
+    x = Dropout(0.3)(x)
+    outputs = Dense(4, activation='softmax')(x)
+    model = Model(inputs=inputs,outputs=outputs)
 
     print("✅ Model initialized")
     print(model.summary)
