@@ -34,7 +34,7 @@ def initialize_model(input_shape: tuple) -> Model:
                          pretrained_top=False,
                          classes=4)
 
-    data_augmentation = keras.Sequential(
+    data_augmentation = Sequential(
         [
             layers.experimental.preprocessing.Normalization(),
             layers.experimental.preprocessing.Resizing(224, 224)
