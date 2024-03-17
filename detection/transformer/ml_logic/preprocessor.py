@@ -18,14 +18,14 @@ def preprocess_data():
     test_dir = TEST_DATA_PATH
 
     # Create a generator with augmentation for training and validation:
-    dgen_train = ImageDataGenerator(rescale = 1./255,
+    dgen_train = ImageDataGenerator(#rescale = 1./255,
                                     validation_split=0.2,
                                     shear_range=0.2,
                                     zoom_range = 0.2,
                                     horizontal_flip = False)
 
     # Create a generator without augmentation for test:
-    dgen_test = ImageDataGenerator(rescale=1./255)
+    dgen_test = ImageDataGenerator()#rescale=1./255)
 
     # Make generators by directories:
     # The classes wiil be the subdirectories
