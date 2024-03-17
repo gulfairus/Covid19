@@ -4,8 +4,8 @@ from colorama import Fore, Style
 from typing import Tuple
 
 # Timing the TF import
-print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
-start = time.perf_counter()
+# print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
+# start = time.perf_counter()
 
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
@@ -16,8 +16,8 @@ from tensorflow.keras.applications.efficientnet import EfficientNetB7, preproces
 from tensorflow.keras.models import Model, load_model
 
 
-end = time.perf_counter()
-print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
+# end = time.perf_counter()
+# print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 
 
