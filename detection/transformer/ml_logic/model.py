@@ -26,7 +26,7 @@ def initialize_model(input_shape: tuple) -> Model:
     """
     Initialize the Neural Network with random weights
     """
-    vit_model = vit.vit_b16(image_size=input_shape[0],
+    vit_model = vit.vit_b16(image_size=input_shape,
                             #image_size=input_shape,
                          activation='relu',
                          pretrained=True,
