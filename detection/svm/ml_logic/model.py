@@ -31,26 +31,26 @@ def initialize_model(input_shape: tuple) -> Model:
 
     model = Sequential()
     model.add(Conv2D(32,(5,5), padding="SAME", activation="relu", input_shape=(150,150,3)))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
-    model.add(Conv2D(32,(5,5), padding="SAME", activation="relu"))
-    model.add(Conv2D(32,(5,5), padding="SAME", activation="relu"))
-    model.add(Conv2D(32,(5,5), padding="SAME", activation="relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
-    model.add(Conv2D(64,(5,5), padding="SAME", activation="relu"))
-    model.add(Conv2D(64,(5,5), padding="SAME", activation="relu"))
-    model.add(Conv2D(64,(5,5), padding="SAME", activation="relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
-    model.add(Conv2D(128,(5,5), padding="SAME", activation="relu"))
-    model.add(Conv2D(128,(5,5), padding="SAME", activation="relu"))
-    model.add(Conv2D(128,(5,5), padding="SAME", activation="relu"))
-    model.add(MaxPooling2D(pool_size=(2,2)))
-    model.add(Dropout(0.5))
+    #model.add(Rescaling(1./255, input_shape=input_shape))
+
+    model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(2,2))
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2,2))
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(Dropout(0.2))
+
     model.add(Flatten())
-    model.add(Dense(512, activation="relu"))
+
+    model.add(Dense(128, activation='relu'))
+    model.add(BatchNormalization())
     model.add(Dropout(0.5))
+
     model.add(Dense(4,kernel_regularizer=reg, bias_regularizer=reg, activation="softmax"))
     model.summary()
 
