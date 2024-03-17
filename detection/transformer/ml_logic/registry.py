@@ -118,6 +118,31 @@ def load_model(stage="Production") -> keras.Model:
 
             return None
 
+    elif MODEL_TARGET == "mlflow":
+        print(Fore.BLUE + f"\nLoad [{stage}] model from MLflow..." + Style.RESET_ALL)
+
+        # Load model from MLflow
+        model = None
+        mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+        client = MlflowClient()
+
+        try:
+            model_versions = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[stage])
+            model_uri = model_versions[0].source
+
+            assert model_uri is not None
+        except:
+            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {stage}")
+
+            return None
+
+        model = mlflow.tensorflow.load_model(model_uri=model_uri)
+
+        print("✅ Model loaded from MLflow")
+        return model
+    else:
+        return None
+
 def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
     """
     Transition the latest model from the `current_stage` to the
