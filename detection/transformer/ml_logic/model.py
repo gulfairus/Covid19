@@ -25,7 +25,8 @@ def initialize_model(input_shape: tuple) -> Model:
     """
     Initialize the Neural Network with random weights
     """
-    vit_model = vit.vit_b16(image_size=input_shape,
+    vit_model = vit.vit_b16(image_size=input_shape[0],
+                            #image_size=input_shape,
                          activation='relu',
                          pretrained=True,
                          include_top=True,
@@ -38,13 +39,19 @@ def initialize_model(input_shape: tuple) -> Model:
     model = Sequential()
     model.add(vit_model)
     model.add(Flatten())
-    model.add(BatchNormalization())
+    # model.add(BatchNormalization())
+    # model.add(Dense(128, activation='relu'))
+    # model.add(Dropout(0.3))
+    # model.add(Dense(64, activation='relu'))
+    # model.add(Dropout(0.3))
+    # model.add(Dense(32, activation='relu'))
+
+    model.add(Dense(256, activation='relu'))
+    model.add(Dropout(0.2))
     model.add(Dense(128, activation='relu'))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.2))
     model.add(Dense(64, activation='relu'))
-    model.add(Dropout(0.3))
-    model.add(Dense(32, activation='relu'))
-    model.add(Dropout(0.5))
+    model.add(Dropout(0.2))
     model.add(Dense(4, activation='softmax'))
 
     print("✅ Model initialized")
@@ -67,10 +74,10 @@ def compile_model(model: Model, learning_rate) -> Model:
 def train_model(
         model: Model,
         train_data,
-        batch_size=32,
-        patience=5,
+        batch_size,
+        patience,
         validation_data=None,
-        epochs=10) -> Tuple[Model, dict]:
+        epochs=None) -> Tuple[Model, dict]:
     """
     Fit the model and return a tuple (fitted_model, history)
     """
@@ -93,7 +100,7 @@ def train_model(
     )
 
 
-    print(f"✅ Model trained on rows with min val MAE: {round(np.min(history.history['val_mae']), 2)}")
+    print(f"✅ Model trained ")
 
     return model, history
 
@@ -101,13 +108,13 @@ def train_model(
 def evaluate_model(
         model: Model,
         test_data,
-        batch_size=32
+        batch_size,
     ) -> Tuple[Model, dict]:
     """
     Evaluate trained model performance on the dataset
     """
 
-    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
+    print(Fore.BLUE + f"\nEvaluating model..." + Style.RESET_ALL)
 
     if model is None:
         print(f"\n❌ No model to evaluate")
@@ -124,6 +131,6 @@ def evaluate_model(
     loss = metrics["loss"]
     accuracy = metrics["accuracy"]
 
-    print(f"✅ Model evaluated, Accuracy: {round(accuracy, 2)}")
+    print(f"✅ Model evaluated")
 
     return metrics

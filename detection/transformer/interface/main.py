@@ -53,7 +53,7 @@ def train(
         learning_rate=0.0005,
         batch_size = 32,
         patience = 2,
-        epochs=5
+        epochs=50
     ) -> float:
 
     """
@@ -110,6 +110,7 @@ def train(
 
 @mlflow_run
 def evaluate(
+        batch_size = 32,
         # min_date:str = '2014-01-01',
         # max_date:str = '2015-01-01',
         stage: str = "Production"
