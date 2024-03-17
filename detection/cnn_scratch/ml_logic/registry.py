@@ -132,7 +132,7 @@ def load_model(stage="Production") -> keras.Model:
 
             assert model_uri is not None
         except:
-            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME+'_cnn_scratch'} in stage {stage}")
+            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME}_cnn_scratch in stage {stage}")
 
             return None
 
