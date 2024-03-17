@@ -4,6 +4,7 @@ Result a generator with shape (224,224,3)
 """
 
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from detection.params import *
 
 
 def preprocess_data():

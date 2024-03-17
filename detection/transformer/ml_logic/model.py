@@ -2,6 +2,7 @@ import numpy as np
 import time
 from colorama import Fore, Style
 from typing import Tuple
+from detection.params import *
 
 # Timing the TF import
 print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
