@@ -26,7 +26,7 @@ def initialize_model(input_shape: tuple) -> Model:
     """
     # Initialize the Neural Network with random weights
     """
-    vit_model = vit.vit_b32(image_size=input_shape,
+    vit_model = vit.vit_b16(image_size=224,
                             #image_size=input_shape,
                          activation='relu',
                          pretrained=True,
@@ -34,13 +34,21 @@ def initialize_model(input_shape: tuple) -> Model:
                          pretrained_top=False,
                          classes=4)
 
+    data_augmentation = keras.Sequential(
+        [
+            layers.experimental.preprocessing.Normalization(),
+            layers.experimental.preprocessing.Resizing(224, 224)
+        ],
+        name="data_augmentation",
+    )
     # for layer in vit_model.layers:
     #     layer.trainable = False
     inputs = Input(shape=input_shape)
+    augmented = data_augmentation(inputs)
     vit_model.trainable = False
-    x = vit_model(inputs)
+    x = vit_model(augmented)
     #model.add(Flatten())
-    x = BatchNormalization()(x)
+    #x = BatchNormalization()(x)
     # model.add(Dense(512, activation='relu'))
     # model.add(Dropout(0.3))
     # model.add(Dense(256, activation='relu'))
