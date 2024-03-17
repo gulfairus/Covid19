@@ -30,21 +30,21 @@ from detection.cnn_pre.ml_logic.preprocessor import preprocess_data
 from detection.cnn_pre.ml_logic.registry import load_model, save_model, save_results
 from detection.cnn_pre.ml_logic.registry import mlflow_run, mlflow_transition_model
 
-def preprocess() -> None:
-    #storage_client = storage.Client(GCP_PROJECT)
-    #bucket = storage_client.get_bucket(BUCKET_NAME)
+# def preprocess() -> None:
+#     #storage_client = storage.Client(GCP_PROJECT)
+#     #bucket = storage_client.get_bucket(BUCKET_NAME)
 
 
-    # load_data_to_bq(
-    #     df_processed,
-    #     gcp_project=GCP_PROJECT,
-    #     bq_dataset=BQ_DATASET,
-    #     table=f'df_processed',
-    #     truncate=True
-    # )
+#     # load_data_to_bq(
+#     #     df_processed,
+#     #     gcp_project=GCP_PROJECT,
+#     #     bq_dataset=BQ_DATASET,
+#     #     table=f'df_processed',
+#     #     truncate=True
+#     # )
 
-    print("✅ preprocess() done \n")
-    return None
+#     print("✅ preprocess() done \n")
+#     return None
 
 @mlflow_run
 def train(

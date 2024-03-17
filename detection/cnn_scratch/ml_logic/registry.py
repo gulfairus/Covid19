@@ -127,12 +127,12 @@ def load_model(stage="Production") -> keras.Model:
         client = MlflowClient()
 
         try:
-            model_versions = client.get_latest_versions(name=MLFLOW_MODEL_NAME+'_cnn_scratch', stages=[stage])
+            model_versions = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[stage])
             model_uri = model_versions[0].source
 
             assert model_uri is not None
         except:
-            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME}_cnn_scratch in stage {stage}")
+            print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {stage}")
 
             return None
 
@@ -152,20 +152,20 @@ def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
 
     client = MlflowClient()
 
-    version = client.get_latest_versions(name=MLFLOW_MODEL_NAME+'_cnn_scratch', stages=[current_stage])
+    version = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[current_stage])
 
     if not version:
-        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME+'_cnn_scratch'} in stage {current_stage}")
+        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {current_stage}")
         return None
 
     client.transition_model_version_stage(
-        name=MLFLOW_MODEL_NAME+'_cnn_scratch',
+        name=MLFLOW_MODEL_NAME,
         version=version[0].version,
         stage=new_stage,
         archive_existing_versions=True
     )
 
-    print(f"✅ Model {MLFLOW_MODEL_NAME+'_cnn_scratch'} (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
+    print(f"✅ Model {MLFLOW_MODEL_NAME} (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
 
     return None
 
@@ -181,7 +181,7 @@ def mlflow_run(func):
     def wrapper(*args, **kwargs):
         mlflow.end_run()
         mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-        mlflow.set_experiment(experiment_name=MLFLOW_EXPERIMENT+'_cnn_scratch')
+        mlflow.set_experiment(experiment_name=MLFLOW_EXPERIMENT)
 
         with mlflow.start_run():
             mlflow.tensorflow.autolog()
