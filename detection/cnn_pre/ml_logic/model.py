@@ -117,7 +117,7 @@ def evaluate_model(
     Evaluate trained model performance on the dataset
     """
 
-    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
+    print(Fore.BLUE + f"\nEvaluating model ..." + Style.RESET_ALL)
 
     if model is None:
         print(f"\n❌ No model to evaluate")
