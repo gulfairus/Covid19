@@ -127,20 +127,20 @@ def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
 
     client = MlflowClient()
 
-    version = client.get_latest_versions(name=MLFLOW_MODEL_NAME+'_cnn_pre', stages=[current_stage])
+    version = client.get_latest_versions(name=MLFLOW_MODEL_NAME, stages=[current_stage])
 
     if not version:
-        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME}_cnn_pre in stage {current_stage}")
+        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME} in stage {current_stage}")
         return None
 
     client.transition_model_version_stage(
-        name=MLFLOW_MODEL_NAME+'_cnn_pre',
+        name=MLFLOW_MODEL_NAME,
         version=version[0].version,
         stage=new_stage,
         archive_existing_versions=True
     )
 
-    print(f"✅ Model {MLFLOW_MODEL_NAME}+'_cnn_pre' (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
+    print(f"✅ Model {MLFLOW_MODEL_NAME} (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
 
     return None
 
@@ -156,7 +156,7 @@ def mlflow_run(func):
     def wrapper(*args, **kwargs):
         mlflow.end_run()
         mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-        mlflow.set_experiment(experiment_name=MLFLOW_EXPERIMENT+'_cnn_pre')
+        mlflow.set_experiment(experiment_name=MLFLOW_EXPERIMENT)
 
         with mlflow.start_run():
             mlflow.tensorflow.autolog()
