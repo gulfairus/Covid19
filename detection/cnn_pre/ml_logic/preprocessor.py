@@ -14,6 +14,7 @@ import random
 from detection.params import *
 from tensorflow.keras.preprocessing.image import ImageDataGenerator, preprocess_input
 from tensorflow.keras.preprocessing import image_dataset_from_directory
+from tensorflow.keras.applications.efficientnet import preprocess_input
 import time
 import pickle
 
