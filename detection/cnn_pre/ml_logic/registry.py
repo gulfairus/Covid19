@@ -130,7 +130,7 @@ def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
     version = client.get_latest_versions(name=MLFLOW_MODEL_NAME+'_cnn_pre', stages=[current_stage])
 
     if not version:
-        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME+'_cnn_pre'} in stage {current_stage}")
+        print(f"\n❌ No model found with name {MLFLOW_MODEL_NAME}_cnn_pre in stage {current_stage}")
         return None
 
     client.transition_model_version_stage(
@@ -140,7 +140,7 @@ def mlflow_transition_model(current_stage: str, new_stage: str) -> None:
         archive_existing_versions=True
     )
 
-    print(f"✅ Model {MLFLOW_MODEL_NAME+'_cnn_pre'} (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
+    print(f"✅ Model {MLFLOW_MODEL_NAME}+'_cnn_pre' (version {version[0].version}) transitioned from {current_stage} to {new_stage}")
 
     return None
 
