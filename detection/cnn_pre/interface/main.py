@@ -75,7 +75,7 @@ def train(
     if model is None:
         model = initialize_model(input_shape=(150,150,3))
 
-    model = compile_model(model, learning_rate=learning_rate)
+    model = compile_model(model, learning_rate=0.0001)
     model, history = train_model(
         model, train_data=train_generator, batch_size=batch_size,
         patience=patience,validation_data=validation_generator, epochs=epochs
@@ -108,6 +108,7 @@ def train(
 
 @mlflow_run
 def evaluate(
+        batch_size = 32,
         # min_date:str = '2014-01-01',
         # max_date:str = '2015-01-01',
         stage: str = "Production"
@@ -123,7 +124,7 @@ def evaluate(
 
     train_generator, validation_generator, test_generator = preprocess_data()
 
-    metrics_dict = evaluate_model(model=model, test_data=test_generator)
+    metrics_dict = evaluate_model(model=model, test_data=test_generator, batch_size=batch_size)
     accuracy = metrics_dict["accuracy"]
 
     params = dict(
