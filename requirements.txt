@@ -21,3 +21,4 @@ psycopg2-binary
 vit_keras
 tensorflow_addons
 opencv-python
+scikit-image
