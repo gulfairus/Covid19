@@ -102,7 +102,7 @@ def train_model(
     )
 
 
-    print(f"✅ Model trained on rows with min val MAE: {round(np.min(history.history['val_mae']), 2)}")
+    print(f"✅ Model trained")
 
     return model, history
 
@@ -116,7 +116,7 @@ def evaluate_model(
     Evaluate trained model performance on the dataset
     """
 
-    print(Fore.BLUE + f"\nEvaluating model on {len(X)} rows..." + Style.RESET_ALL)
+    print(Fore.BLUE + f"\nEvaluating model ..." + Style.RESET_ALL)
 
     if model is None:
         print(f"\n❌ No model to evaluate")
@@ -133,6 +133,6 @@ def evaluate_model(
     loss = metrics["loss"]
     accuracy = metrics["accuracy"]
 
-    print(f"✅ Model evaluated, Accuracy: {round(accuracy, 2)}")
+    print(f"✅ Model evaluated")
 
     return metrics
