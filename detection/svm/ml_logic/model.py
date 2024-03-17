@@ -64,7 +64,7 @@ def initialize_model(input_shape: tuple) -> Model:
     model.add(Dropout(0.2))
 
     model.add(Dense(4,kernel_regularizer=reg, bias_regularizer=reg, activation="softmax"))
-    model.summary()
+    #model.summary()
 
     # model = Sequential()
     # model.add(Conv2D(32,(5,5), padding="SAME", activation="relu", input_shape=(150,150,3)))
@@ -92,7 +92,7 @@ def initialize_model(input_shape: tuple) -> Model:
     # model.summary()
 
     print("✅ Model initialized")
-    #print(model.summary)
+    print(model.summary)
 
     return model
 
