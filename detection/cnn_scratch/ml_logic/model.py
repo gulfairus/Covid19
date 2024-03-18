@@ -12,7 +12,6 @@ from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
 from tensorflow.keras.models import Sequential
-import tensorflow
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
