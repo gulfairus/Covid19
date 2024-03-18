@@ -40,7 +40,7 @@ def preprocess_data():
 
     return flat_data.head()
 
-
+print(preprocess_data())
 
 
     # dgen_train = ImageDataGenerator(#samplewise_center=True,
