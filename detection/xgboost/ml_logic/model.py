@@ -28,6 +28,10 @@ def initialize_model(input_shape: tuple) -> Model:
     """
     Initialize the Neural Network with random weights
     """
+    #input data
+    x=df.iloc[:,:-1]
+    #output data
+    y=df.iloc[:,-1]
 
     # it = Iterator(["file_0.svm", "file_1.svm", "file_2.svm"])
     # Xy = xgboost.DMatrix(it)

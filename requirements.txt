@@ -22,3 +22,6 @@ vit_keras
 tensorflow_addons
 opencv-python
 scikit-image
+streamlit
+fastapi
+uvicorn

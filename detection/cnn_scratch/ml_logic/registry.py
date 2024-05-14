@@ -101,7 +101,7 @@ def load_model(stage="Production") -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from GCS..." + Style.RESET_ALL)
 
         client = storage.Client()
-        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model/cnn_scratch"))
+        blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="trainig_outputs/models/cnn_scratch"))
 
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)

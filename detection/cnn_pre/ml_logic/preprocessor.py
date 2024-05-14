@@ -63,3 +63,17 @@ def preprocess_data():
 
 
     return train_generator, validation_generator, test_generator
+
+def preprocess_features(x):
+    """
+    Preprocess new images to predict.
+    Input - binary by api query.
+    Output - Generator
+    """
+    stream = BytesIO(x)
+    img = Image.open(stream)
+    image = img.resize((150,150))
+    array = img_to_array(image)
+    tensor = tf.expand_dims(array, axis=0)
+    #print(f"tensor: {tensor}")
+    return tensor

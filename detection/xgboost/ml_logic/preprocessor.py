@@ -28,19 +28,32 @@ def preprocess_data():
     for i in Categories:
 
         print(f'loading... category : {i}')
-        path=os.path.join(train_dir,i)
-        for img in os.listdir(path):
-            img_array=imread(os.path.join(path,img))
+        path1=os.path.join(train_dir,i)
+        for img in os.listdir(path1):
+            img_array=imread(os.path.join(path1,img))
             img_resized=resize(img_array,(150,150,3))
             flat_data_arr.append(img_resized.flatten())
             target_arr.append(Categories.index(i))
         print(f'loaded category:{i} successfully')
-    flat_data=np.array(flat_data_arr)
-    target=np.array(target_arr)
+    train_data=pd.DataFrame(flat_data_arr)
+    train_data['target']=target_arr
 
-    return flat_data.head()
+    for i in Categories:
 
-print(preprocess_data())
+        print(f'loading... category : {i}')
+        path2=os.path.join(test_dir,i)
+        for img in os.listdir(path2):
+            img_array=imread(os.path.join(path2,img))
+            img_resized=resize(img_array,(150,150,3))
+            flat_data_arr.append(img_resized.flatten())
+            target_arr.append(Categories.index(i))
+        print(f'loaded category:{i} successfully')
+    test_data=pd.DataFrame(flat_data_arr)
+    test_data['target']=target_arr
+
+    return train_data, test_data
+
+
 
 
     # dgen_train = ImageDataGenerator(#samplewise_center=True,
