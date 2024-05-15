@@ -30,8 +30,8 @@ LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "covid1
 # TRAIN_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train"
 # TEST_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train_test/test"
 
-TRAIN_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/train"
-TEST_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/test"
+TRAIN_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train"
+TEST_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train_test/test"
 
 
 
