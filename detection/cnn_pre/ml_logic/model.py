@@ -74,7 +74,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     return model
 
 def train_model(
-        model,
+        model: Model,
         train_data,
         batch_size,
         patience,
