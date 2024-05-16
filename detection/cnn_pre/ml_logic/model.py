@@ -7,7 +7,7 @@ from typing import Tuple
 # print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
 # start = time.perf_counter()
 
-import tensorflow as tf
+import tensorflow
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Input, GlobalAveragePooling2D
 from tensorflow.keras import optimizers
@@ -21,7 +21,7 @@ from tensorflow.keras.models import Model, load_model
 
 
 
-def initialize_model(input_shape: tuple = None) -> Model:
+def initialize_model(input_shape) -> Model:
     """
     Initialize the Neural Network with random weights
     """
@@ -66,14 +66,15 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["f1_score", "recall"])
+    #model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["f1_score", "recall"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 
     print("✅ Model compiled")
 
     return model
 
 def train_model(
-        model: Model,
+        model,
         train_data,
         batch_size,
         patience,
