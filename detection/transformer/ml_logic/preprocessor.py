@@ -14,8 +14,8 @@ def preprocess_data():
     """
 
     # Define directories by global variabels:
-    train_dir = TRAIN_DATA_PATH
-    test_dir = TEST_DATA_PATH
+    train_dir = TRAIN_DATA_PATH_CLOUD
+    test_dir = TEST_DATA_PATH_CLOUD
 
     # Create a generator with augmentation for training and validation:
     dgen_train = ImageDataGenerator(#rescale = 1./255,
