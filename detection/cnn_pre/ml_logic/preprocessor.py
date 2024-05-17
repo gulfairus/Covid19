@@ -29,6 +29,9 @@ def preprocess_data():
     train_dir = TRAIN_DATA_PATH_CLOUD
     test_dir = TEST_DATA_PATH_CLOUD
 
+    # train_dir = TRAIN_DATA_PATH
+    # test_dir = TEST_DATA_PATH
+
     # Create a generator with augmentation for training and validation:
     dgen_train = ImageDataGenerator(
                                     #rescale = 1./255,
