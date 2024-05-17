@@ -7,7 +7,7 @@ from typing import Tuple
 # print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
 # start = time.perf_counter()
 
-import tensorflow
+import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Input, GlobalAveragePooling2D
 from tensorflow.keras import optimizers
@@ -66,7 +66,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["f1_score", "recall"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=[tf.keras.metrics.Precision, tf.keras.metrics.Recall(), tf.keras.metrics.F1Score(threshold=0.5)])
     #model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 
     print("✅ Model compiled")
