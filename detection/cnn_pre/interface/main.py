@@ -81,7 +81,7 @@ def train(
         patience=patience,validation_data=validation_generator, epochs=epochs
     )
 
-    val_accuracy = np.min(history.history['accuracy'])
+    val_recall = np.min(history.history['recall'])
 
     params = dict(
         context="train",
@@ -90,7 +90,7 @@ def train(
     )
 
     # Save results on the hard drive using taxifare.ml_logic.registry
-    save_results(params=params, metrics=dict(accuracy=val_accuracy))
+    save_results(params=params, metrics=dict(recall=val_recall))
 
     # Save model weight on the hard drive (and optionally on GCS too!)
     save_model(model=model)
@@ -103,7 +103,7 @@ def train(
 
     print("✅ train() done \n")
 
-    return val_accuracy
+    return val_recall
 
 
 @mlflow_run
@@ -125,7 +125,7 @@ def evaluate(
     train_generator, validation_generator, test_generator = preprocess_data()
 
     metrics_dict = evaluate_model(model=model, test_data=test_generator, batch_size=batch_size)
-    accuracy = metrics_dict["accuracy"]
+    recall = metrics_dict["recall"]
 
     params = dict(
         context="evaluate", # Package behavior
@@ -137,7 +137,7 @@ def evaluate(
 
     print("✅ evaluate() done \n")
 
-    return accuracy
+    return recall
 
 
 def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
