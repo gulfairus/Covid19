@@ -8,6 +8,7 @@ from typing import Tuple
 print(Fore.BLUE + "\nLoading TensorFlow..." + Style.RESET_ALL)
 start = time.perf_counter()
 
+import tensorflow as tf
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
 from keras.callbacks import EarlyStopping
@@ -23,31 +24,66 @@ print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 
 
-def initialize_model(input_shape: tuple) -> Model:
+def initialize_model(input_shape) -> Model:
     """
     Initialize the Neural Network with random weights
     """
 
     model = Sequential()
-    model.add(Conv2D(32,(5,5), padding="SAME", activation="relu", input_shape=(150,150,3)))
-    #model.add(Rescaling(1./255, input_shape=input_shape))
-
-    model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(32,(3,3), padding="SAME", activation="relu", input_shape=(150,150,3)))
+    model.add(Conv2D(32,(3,3), padding="SAME", activation="relu"))
+    model.add(Conv2D(32,(3,3), padding="SAME", activation="relu"))
     model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
+    #model.add(Rescaling(1./255, input_shape=input_shape))
+
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
     model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
     model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
     model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
     model.add(Flatten())
 
-    model.add(Dense(128, activation='relu'))
-    model.add(BatchNormalization())
+    model.add(Dense(4096, activation='relu'))
     model.add(Dropout(0.5))
 
     model.add(Dense(4, activation='softmax'))
@@ -63,7 +99,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=[tf.keras.metrics.Recall()])
 
     print("✅ Model compiled")
 
@@ -129,8 +165,8 @@ def evaluate_model(
     )
 
     loss = metrics["loss"]
-    accuracy = metrics["accuracy"]
+    recall = metrics["recall"]
 
-    print(f"✅ Model evaluated, Accuracy: {round(accuracy, 2)}")
+    print(f"✅ Model evaluated, Recall: {round(recall, 2)}")
 
     return metrics

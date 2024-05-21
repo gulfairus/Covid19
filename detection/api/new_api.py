@@ -30,7 +30,7 @@ async def predict(request: Request):
     except:
         return {'status': 'fail'}
 
-    ef predict_covid(filename, model):
+def predict_covid(filename, model):
     #model = create_model()
     dict = {}
     try:

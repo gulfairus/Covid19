@@ -26,24 +26,48 @@ def preprocess_data():
     """
 
     # Define directories by global variabels:
-    train_dir = TRAIN_DATA_PATH_CLOUD
-    test_dir = TEST_DATA_PATH_CLOUD
+    # train_dir = TRAIN_DATA_PATH_CLOUD
+    # test_dir = TEST_DATA_PATH_CLOUD
 
-    # train_dir = TRAIN_DATA_PATH
-    # test_dir = TEST_DATA_PATH
+    train_dir_normal = TRAIN_DATA_PATH
+    train_dir_no_normal = TRAIN_DATA_PATH
+    test_dir = TEST_DATA_PATH
 
     # Create a generator with augmentation for training and validation:
-    dgen_train = ImageDataGenerator(
-                                    #rescale = 1./255,
+    dgen_train_normal = ImageDataGenerator(
+                                    rescale = 1./255,
                                     validation_split=0.2,
                                     #shear_range=0.2,
                                     #zoom_range = 0.2,
                                     #horizontal_flip = False,
-                                    preprocessing_function = preprocess_input)
+                                    #preprocessing_function = preprocess_input
+                                    )
+    dgen_train_others = ImageDataGenerator(
+                                    rescale = 1./255,
+                                    validation_split=0.2,
+                                    shear_range=0.2,
+                                    zoom_range = 0.2,
+                                    #horizontal_flip = False,
+                                    )
+
+    # datagen = ImageDataGenerator(
+    #     featurewise_center = False,
+    #     featurewise_std_normalization = False,
+    #     rotation_range = 10,
+    #     width_shift_range = 0.1,
+    #     height_shift_range = 0.1,
+    #     horizontal_flip = True,
+    #     zoom_range = (0.8, 1.2),
+    #     )
+
+#     model_2.add(layers.RandomFlip("horizontal"))
+# model_2.add(layers.RandomZoom(0.1))
+# model_2.add(layers.RandomTranslation(0.2, 0.2))
+# model_2.add(layers.RandomRotation(0.1))
 
     # Create a generator without augmentation for test:
     #dgen_test = ImageDataGenerator(rescale=1./255)
-    dgen_test = ImageDataGenerator(preprocessing_function = preprocess_input)
+    dgen_test = ImageDataGenerator(rescale = 1./255)
 
     # Make generators by directories:
     # The classes wiil be the subdirectories
