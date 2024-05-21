@@ -22,17 +22,13 @@ def preprocess_data():
 
     # generate training,testing and validation batches
 
+    # train_dir = TRAIN_DATA_PATH
+    # test_dir = TEST_DATA_PATH
+    # val_dir = VAL_DATA_PATH
 
-    # train_dir_norm = TRAIN_NORM_PATH_CLOUD
-    # train_dir_other = TRAIN_OTHER_PATH_CLOUD
-    # test_dir = TEST_DATA_PATH_CLOUD
-    # val_dir = VAL_DATA_PATH_CLOUD
-
-    #train_dir_norm = TRAIN_NORM_PATH
-    #train_dir_other = TRAIN_OTHER_PATH
-    train_dir = TRAIN_DATA_PATH
-    test_dir = TEST_DATA_PATH
-    val_dir = VAL_DATA_PATH
+    train_dir = TRAIN_DATA_PATH_CLOUD
+    test_dir = TEST_DATA_PATH_CLOUD
+    val_dir = VAL_DATA_PATH_CLOUD
 
     # def random_crop(image):
     #     height, width = image.shape[:2]
