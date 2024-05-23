@@ -52,7 +52,7 @@ def initialize_model(input_shape) -> Model:
     x = base_model(inputs, training=False)
     #x = GlobalAveragePooling2D()(x)
     x = Flatten()(x)
-    x = Dense(2560, activation="relu")(x)
+    #x = Dense(2560, activation="relu")(x)
     x = Dropout(0.2)(x)
     # x = BatchNormalization()(x)
     # x = Dense(128, activation="relu")(x)
