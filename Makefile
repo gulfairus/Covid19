@@ -104,6 +104,9 @@ reset_local_files:
 	mkdir ~/.lewagon/covid19/data/raw
 	mkdir ~/.lewagon/covid19/data/processed
 	mkdir ~/.lewagon/covid19/training_outputs
+	mkdir ~/.lewagon/covid19/training_outputs/metrics
+	mkdir ~/.lewagon/covid19/training_outputs/models
+	mkdir ~/.lewagon/covid19/training_outputs/params
 	mkdir ~/.lewagon/covid19/training_outputs/metrics/cnn_pre
 	mkdir ~/.lewagon/covid19/training_outputs/models/cnn_pre
 	mkdir ~/.lewagon/covid19/training_outputs/params/cnn_pre
