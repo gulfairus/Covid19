@@ -46,7 +46,8 @@ def preprocess_data():
     dgen_train = ImageDataGenerator(rescale = 1./255,
                                     shear_range=0.2,
                                     zoom_range = 0.2,
-                                    channel_shift_range = 20)
+                                    #channel_shift_range = 20,
+                                    horizontal_flip = True)
     dgen_validation = ImageDataGenerator(rescale = 1./255)
     dgen_test = ImageDataGenerator(rescale=1./255)
 
@@ -64,6 +65,7 @@ def preprocess_data():
 
     validation_generator = dgen_validation.flow_from_directory(val_dir,
                                                     target_size=(150,150),
+                                                    subset = "validation",
                                                     batch_size = 32,
                                                     class_mode = "categorical")
 
