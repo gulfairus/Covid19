@@ -46,7 +46,7 @@ def initialize_model(input_shape) -> Model:
     # model.add(Dense(4, activation='softmax'))
 
     inputs = Input(shape=input_shape)
-    base_model = EfficientNetB7(include_top=False, pooling='avg', input_shape=(150,150,3), weights='imagenet')
+    base_model = EfficientNetB7(include_top=False, pooling='avg', input_shape=(150,150,3), weights=None)
     for layer in base_model.layers:
         layer.trainable =  False
     #x = preprocess_input(inputs)
