@@ -11,7 +11,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import MaxPooling2D, Flatten, Dense, Dropout, BatchNormalization, Input, GlobalAveragePooling2D
 from tensorflow.keras import optimizers
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.applications.efficientnet import EfficientNetB7, preprocess_input
 from tensorflow.keras.models import Model, load_model
 
@@ -47,9 +47,10 @@ def initialize_model(input_shape) -> Model:
 
     inputs = Input(shape=input_shape)
     base_model = EfficientNetB7(include_top=False, pooling='avg', input_shape=(150,150,3), weights='imagenet')
-    base_model.trainable = False
+    for layer in base_model.layers:
+        layer.trainable =  False
     #x = preprocess_input(inputs)
-    x = base_model(inputs, training=False)
+    x = base_model(inputs)
     #x = GlobalAveragePooling2D()(x)
     x = Flatten()(x)
     x = Dense(2560, activation="relu")(x)
@@ -94,18 +95,28 @@ def train_model(
     print(Fore.BLUE + "\nTraining model..." + Style.RESET_ALL)
 
     es = EarlyStopping(
-        monitor="val_loss",
+        monitor="val_accuracy",
         patience=patience,
+        min_delta=.01,
+        mode='auto',
         restore_best_weights=True,
-        verbose=1
+        verbose=1,
+        start_from_epoch = 0
     )
+
+    rlr = ReduceLROnPlateau( monitor="val_accuracy",
+                            factor=0.01,
+                            patience=patience,
+                            verbose=0,
+                            mode="max",
+                            min_delta=0.01)
 
     history = model.fit(
         train_data,
         validation_data=validation_data,
         epochs=epochs,
         batch_size=batch_size,
-        callbacks=[es],
+        callbacks=[es, rlr],
         verbose=1
     )
 
