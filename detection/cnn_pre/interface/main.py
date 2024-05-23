@@ -50,7 +50,7 @@ from detection.cnn_pre.ml_logic.registry import mlflow_run, mlflow_transition_mo
 def train(
         learning_rate=0.0001,
         batch_size = 32,
-        patience = 5,
+        patience = 2,
         epochs=50
     ) -> float:
 
