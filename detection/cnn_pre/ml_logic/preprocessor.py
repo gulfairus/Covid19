@@ -28,7 +28,7 @@ def preprocess_data():
 
     train_dir = TRAIN_DATA_PATH_CLOUD
     test_dir = TEST_DATA_PATH_CLOUD
-    val_dir = VAL_DATA_PATH_CLOUD
+    #val_dir = VAL_DATA_PATH_CLOUD
 
     # def random_crop(image):
     #     height, width = image.shape[:2]
@@ -46,11 +46,12 @@ def preprocess_data():
     dgen_train = ImageDataGenerator(rescale = 1./255,
                                     shear_range=0.2,
                                     zoom_range = 0.2,
-                                    channel_shift_range = 20)
-    dgen_validation = ImageDataGenerator(rescale = 1./255,
-                                    shear_range=0.2,
-                                    zoom_range = 0.2,
-                                    channel_shift_range = 20)
+                                    channel_shift_range = 20,
+                                    horizontal_flip=True, validation_split=0.2)
+    # dgen_validation = ImageDataGenerator(rescale = 1./255,
+    #                                 shear_range=0.2,
+    #                                 zoom_range = 0.2,
+    #                                 channel_shift_range = 20)
     dgen_test = ImageDataGenerator(rescale=1./255)
 
     train_generator = dgen_train.flow_from_directory(train_dir,
@@ -65,9 +66,9 @@ def preprocess_data():
     #                                                 batch_size = 32,
     #                                                 class_mode = "categorical")
 
-    validation_generator = dgen_validation.flow_from_directory(val_dir,
+    validation_generator = dgen_train.flow_from_directory(train_dir,
                                                     target_size=(150,150),
-                                                    #subset = "validation",
+                                                    subset = "validation",
                                                     batch_size = 32,
                                                     class_mode = "categorical")
 
