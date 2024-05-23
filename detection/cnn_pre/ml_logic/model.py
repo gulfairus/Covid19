@@ -52,14 +52,14 @@ def initialize_model(input_shape) -> Model:
     x = base_model(inputs, training=False)
     #x = GlobalAveragePooling2D()(x)
     x = Flatten()(x)
-    x = Dense(256, activation="relu")(x)
+    x = Dense(2560, activation="relu")(x)
     x = Dropout(0.2)(x)
-    x = BatchNormalization()(x)
-    x = Dense(128, activation="relu")(x)
-    x = Dropout(0.2)(x)
-    x = BatchNormalization()(x)
-    x = Dense(64, activation="relu")(x)
-    x = Dropout(0.2)(x)
+    # x = BatchNormalization()(x)
+    # x = Dense(128, activation="relu")(x)
+    # x = Dropout(0.2)(x)
+    # x = BatchNormalization()(x)
+    # x = Dense(64, activation="relu")(x)
+    # x = Dropout(0.2)(x)
     outputs = Dense(4, activation="softmax")(x)
     model = Model(inputs=inputs,outputs=outputs)
 
@@ -74,8 +74,8 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=[tf.keras.metrics.Recall()])
-    #model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+    #model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=[tf.keras.metrics.Recall()])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
 
     print("✅ Model compiled")
 
@@ -141,8 +141,8 @@ def evaluate_model(
     )
 
     loss = metrics["loss"]
-    recall = metrics["recall"]
+    accuracy = metrics["accuracy"]
 
-    print(f"✅ Model evaluated, Recall: {round(recall, 2)}")
+    print(f"✅ Model evaluated, accuracy: {round(accuracy, 2)}")
 
     return metrics
