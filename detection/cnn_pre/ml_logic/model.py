@@ -50,7 +50,7 @@ def initialize_model(input_shape) -> Model:
     for layer in base_model.layers:
         layer.trainable =  False
     #x = preprocess_input(inputs)
-    x = base_model(x)
+    x = base_model(inputs)
     x = GlobalAveragePooling2D()(x)
     x = Dropout(0.5)(x)
     #x = Flatten()(x)
