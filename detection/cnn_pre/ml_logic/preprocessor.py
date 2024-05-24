@@ -43,10 +43,10 @@ def preprocess_data():
     #     return image_crop
 
     #dgen_train_norm = ImageDataGenerator(rescale = 1./255)
-    dgen_train = ImageDataGenerator(shear_range=0.2,
-                                    zoom_range = 0.2,
+    dgen_train = ImageDataGenerator(#shear_range=0.2,
+                                    #zoom_range = 0.2,
                                     #channel_shift_range = 20,
-                                    horizontal_flip = True,
+                                    #horizontal_flip = True,
                                     validation_split=0.2)
     # dgen_train = ImageDataGenerator(rescale = 1./255,
     #                                validation_split=0.2)
