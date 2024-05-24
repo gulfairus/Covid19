@@ -62,7 +62,6 @@ def preprocess_data():
                                                shuffle=True,
                                                batch_size = 32,
                                                target_size=(150,150),
-                                               validation_split=0.2,
                                                subset = "training",
                                                seed=42,
                                                label_mode = "categorical")
@@ -81,7 +80,7 @@ def preprocess_data():
                                                seed=42,
                                                label_mode = "categorical")
 
-    test_generator = dgen_test.flow_from_directory(train_dir,
+    test_generator = dgen_test.flow_from_directory(test_dir,
                                                shuffle=True,
                                                batch_size = 32,
                                                target_size=(150,150),
