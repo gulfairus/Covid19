@@ -61,7 +61,7 @@ def preprocess_data():
     train_generator = dgen_train.flow_from_directory(train_dir,
                                                shuffle=True,
                                                batch_size = 32,
-                                               image_size=(150,150),
+                                               target_size=(150,150),
                                                validation_split=0.2,
                                                subset = "training",
                                                seed=42,
@@ -76,8 +76,7 @@ def preprocess_data():
     validation_generator = dgen_train.flow_from_directory(train_dir,
                                                shuffle=True,
                                                batch_size = 32,
-                                               image_size=(150,150),
-                                               validation_split=0.2,
+                                               target_size=(150,150),
                                                subset = "validation",
                                                seed=42,
                                                label_mode = "categorical")
@@ -85,8 +84,7 @@ def preprocess_data():
     test_generator = dgen_test.flow_from_directory(train_dir,
                                                shuffle=True,
                                                batch_size = 32,
-                                               image_size=(150,150),
-                                               validation_split=0.2,
+                                               target_size=(150,150),
                                                seed=42,
                                                label_mode = "categorical")
 
