@@ -64,7 +64,7 @@ def preprocess_data():
                                                target_size=(150,150),
                                                subset = "training",
                                                seed=42,
-                                               label_mode = "categorical")
+                                               class_mode = "categorical")
 
     # train_generator_other = dgen_train_other.flow_from_directory(train_dir_other,
     #                                                 target_size=(150,150),
@@ -78,14 +78,14 @@ def preprocess_data():
                                                target_size=(150,150),
                                                subset = "validation",
                                                seed=42,
-                                               label_mode = "categorical")
+                                               class_mode = "categorical")
 
     test_generator = dgen_test.flow_from_directory(test_dir,
                                                shuffle=True,
                                                batch_size = 32,
                                                target_size=(150,150),
                                                seed=42,
-                                               label_mode = "categorical")
+                                               class_mode = "categorical")
 
     #train_merged_generator = chain(train_generator_norm, train_generator_other)
 
