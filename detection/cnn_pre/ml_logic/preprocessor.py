@@ -46,8 +46,8 @@ def preprocess_data():
     dgen_train = ImageDataGenerator(rescale = 1./255,
                                     shear_range=0.2,
                                     zoom_range = 0.2,
-                                    channel_shift_range = 20,
-                                    horizontal_flip=True, validation_split=0.2)
+                                    #channel_shift_range = 20,
+                                    validation_split=0.2)
     # dgen_validation = ImageDataGenerator(rescale = 1./255,
     #                                 shear_range=0.2,
     #                                 zoom_range = 0.2,
