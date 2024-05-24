@@ -46,14 +46,14 @@ def initialize_model(input_shape) -> Model:
     # model.add(Dense(4, activation='softmax'))
 
     inputs = Input(shape=input_shape)
-    base_model = EfficientNetB7(include_top=False, input_shape=(150,150,3), weights=None)
+    base_model = EfficientNetB7(include_top=False, input_shape=(150,150,3), weights='imagenet')
     for layer in base_model.layers:
         layer.trainable =  False
-    x = preprocess_input(inputs)
+    #x = preprocess_input(inputs)
     x = base_model(x)
     x = GlobalAveragePooling2D()(x)
     x = Dropout(0.5)(x)
-    x = Flatten()(x)
+    #x = Flatten()(x)
     # x = Dense(2560, activation="relu")(x)
     # x = Dropout(0.2)(x)
     # x = BatchNormalization()(x)
