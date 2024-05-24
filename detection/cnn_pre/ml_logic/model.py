@@ -52,17 +52,15 @@ def initialize_model(input_shape) -> Model:
     #x = preprocess_input(inputs)
     x = base_model(inputs)
     x = GlobalAveragePooling2D()(x)
-    x = BatchNormalization()(x)
+    #x = BatchNormalization()(x)
     x = Dense(2560, activation="relu")(x)
-    x = Dropout(0.5)(x)
-    # x = Dense(2560, activation="relu")(x)
-    # x = Dropout(0.2)(x)
-    # x = BatchNormalization()(x)
-    # x = Dense(1280, activation="relu")(x)
-    # x = Dropout(0.2)(x)
-    # x = BatchNormalization()(x)
-    # x = Dense(640, activation="relu")(x)
-    # x = Dropout(0.2)(x)
+    x = Dropout(0.2)(x)
+    x = BatchNormalization()(x)
+    x = Dense(1280, activation="relu")(x)
+    x = Dropout(0.2)(x)
+    x = BatchNormalization()(x)
+    x = Dense(640, activation="relu")(x)
+    x = Dropout(0.2)(x)
     outputs = Dense(4, activation="softmax")(x)
     model = Model(inputs=inputs,outputs=outputs)
 
@@ -107,11 +105,11 @@ def train_model(
     )
 
     rlr = ReduceLROnPlateau( monitor="val_accuracy",
-                            factor=0.01,
+                            factor=0.2,
                             patience=patience,
                             verbose=0,
-                            mode="max",
-                            min_delta=0.01)
+                            mode="auto",
+                            min_delta=0.001)
 
     history = model.fit(
         train_data,
