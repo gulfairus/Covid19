@@ -46,21 +46,22 @@ def initialize_model(input_shape) -> Model:
     # model.add(Dense(4, activation='softmax'))
 
     inputs = Input(shape=input_shape)
-    base_model = EfficientNetB7(include_top=False, pooling='max', input_shape=(150,150,3), weights=None)
+    base_model = EfficientNetB7(include_top=False, input_shape=(150,150,3), weights=None)
     for layer in base_model.layers:
         layer.trainable =  False
-    #x = preprocess_input(inputs)
-    x = base_model(inputs)
-    #x = GlobalAveragePooling2D()(x)
+    x = preprocess_input(inputs)
+    x = base_model(x)
+    x = GlobalAveragePooling2D()(x)
+    x = Dropout(0.5)(x)
     x = Flatten()(x)
-    x = Dense(2560, activation="relu")(x)
-    x = Dropout(0.2)(x)
-    x = BatchNormalization()(x)
-    x = Dense(1280, activation="relu")(x)
-    x = Dropout(0.2)(x)
-    x = BatchNormalization()(x)
-    x = Dense(640, activation="relu")(x)
-    x = Dropout(0.2)(x)
+    # x = Dense(2560, activation="relu")(x)
+    # x = Dropout(0.2)(x)
+    # x = BatchNormalization()(x)
+    # x = Dense(1280, activation="relu")(x)
+    # x = Dropout(0.2)(x)
+    # x = BatchNormalization()(x)
+    # x = Dense(640, activation="relu")(x)
+    # x = Dropout(0.2)(x)
     outputs = Dense(4, activation="softmax")(x)
     model = Model(inputs=inputs,outputs=outputs)
 
@@ -95,7 +96,7 @@ def train_model(
     print(Fore.BLUE + "\nTraining model..." + Style.RESET_ALL)
 
     es = EarlyStopping(
-        monitor="val_accuracy",
+        monitor="val_loss",
         patience=patience,
         min_delta=.01,
         mode='auto',
