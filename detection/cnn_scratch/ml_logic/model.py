@@ -106,7 +106,7 @@ def compile_model(model: Model, learning_rate) -> Model:
     Compile the Neural Network
     """
     optimizer = optimizers.Adam(learning_rate=learning_rate)
-    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=[tf.keras.metrics.Recall()])
+    model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=['accuracy'])
 
     print("✅ Model compiled")
 
@@ -189,8 +189,8 @@ def evaluate_model(
     )
 
     loss = metrics["loss"]
-    recall = metrics["recall"]
+    accuracy = metrics["accuracy"]
 
-    print(f"✅ Model evaluated, Recall: {round(recall, 2)}")
+    print(f"✅ Model evaluated, accuracy: {round(accuracy, 2)}")
 
     return metrics
