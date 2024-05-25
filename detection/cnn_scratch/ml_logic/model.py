@@ -84,14 +84,8 @@ def initialize_model(input_shape) -> Model:
     model.add(Flatten())
 
     model.add(Dense(4096, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(BatchNormalization())
-    model.add(Dense(4096, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(BatchNormalization())
-    model.add(Dense(4096, activation='relu'))
-    model.add(Dropout(0.2))
-    model.add(BatchNormalization())
+    model.add(Dropout(0.5))
+
 
     model.add(Dense(4, activation='softmax'))
 
