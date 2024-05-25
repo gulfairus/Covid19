@@ -54,7 +54,13 @@ def initialize_model(input_shape) -> Model:
     x = GlobalAveragePooling2D()(x)
     #x = BatchNormalization()(x)
     x = Dense(2560, activation="relu")(x)
-    x = Dropout(0.5)(x)
+    x = Dropout(0.2)(x)
+    x = BatchNormalization()(x)
+    x = Dense(2560, activation="relu")(x)
+    x = Dropout(0.2)(x)
+    x = BatchNormalization()(x)
+    x = Dense(2560, activation="relu")(x)
+    x = Dropout(0.2)(x)
     x = BatchNormalization()(x)
     outputs = Dense(4, activation="softmax")(x)
     model = Model(inputs=inputs,outputs=outputs)
@@ -99,7 +105,7 @@ def train_model(
         start_from_epoch = 10
     )
 
-    rlr = ReduceLROnPlateau( monitor="val_accuracy",
+    rlr = ReduceLROnPlateau( monitor="val_loss",
                             factor=0.2,
                             patience=patience,
                             verbose=0,
@@ -111,7 +117,7 @@ def train_model(
         validation_data=validation_data,
         epochs=epochs,
         batch_size=batch_size,
-        callbacks=[es],
+        callbacks=[es, rlr],
         verbose=1
     )
 
