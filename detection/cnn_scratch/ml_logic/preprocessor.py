@@ -10,6 +10,7 @@ import random
 from detection.params import *
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image_dataset_from_directory
+from tensorflow.keras.applications.efficientnet import preprocess_input
 from PIL import Image
 import tensorflow as tf
 from tensorflow.keras.utils import img_to_array
