@@ -99,7 +99,6 @@ def train_model(
         patience=patience,
         min_delta=.01,
         mode='auto',
-        baseline=0.85,
         restore_best_weights=True,
         verbose=1,
         start_from_epoch = 10
