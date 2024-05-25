@@ -116,7 +116,7 @@ def train_model(
         validation_data=validation_data,
         epochs=epochs,
         batch_size=batch_size,
-        callbacks=[es, rlr],
+        callbacks=[es],
         verbose=1
     )
 
