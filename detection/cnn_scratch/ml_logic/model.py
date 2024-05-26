@@ -132,7 +132,7 @@ def train_model(
         mode='auto',
         restore_best_weights=True,
         verbose=1,
-        start_from_epoch = 10
+        #start_from_epoch = 10
     )
 
     rlr = ReduceLROnPlateau( monitor="val_loss",
