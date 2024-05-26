@@ -74,16 +74,17 @@ def initialize_model(input_shape) -> Model:
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(MaxPooling2D(2))
-    model.add(BatchNormalization())
-    model.add(Dropout(0.2))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(MaxPooling2D(2))
+    # model.add(BatchNormalization())
+    # model.add(Dropout(0.2))
 
     model.add(Flatten())
 
-    model.add(Dense(4096, activation='relu'))
+    model.add(Dense(2048, activation='relu'))
+    #model.add(Dense(4096, activation='relu'))
     model.add(Dropout(0.5))
 
 
