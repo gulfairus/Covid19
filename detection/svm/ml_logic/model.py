@@ -10,7 +10,7 @@ start = time.perf_counter()
 
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
-from keras.callbacks import EarlyStopping
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
 from tensorflow.keras.optimizers import Adam
@@ -132,6 +132,13 @@ def train_model(
         verbose=1
     )
 
+    rlr = ReduceLROnPlateau( monitor="val_loss",
+                            factor=0.2,
+                            patience=patience,
+                            verbose=0,
+                            mode="auto",
+                            min_delta=0.001)
+
     #steps = len(train_names)//batch_size
 
     history = model.fit(
@@ -139,7 +146,7 @@ def train_model(
         validation_data=validation_data,
         epochs=epochs,
         batch_size=batch_size,
-        callbacks=[es],
+        callbacks=[es, rlr],
         verbose=1
     )
 
