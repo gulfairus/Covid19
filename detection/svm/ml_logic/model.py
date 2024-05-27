@@ -17,6 +17,11 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 from tensorflow.keras.regularizers import l2
+from sklearn import svm
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 
 end = time.perf_counter()
 print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
@@ -27,69 +32,69 @@ def initialize_model(input_shape: tuple) -> Model:
     """
     Initialize the Neural Network with random weights
     """
-    reg = regularizers.l2(0.005)
+    reg = regularizers.l2(0.001)
 
     model = Sequential()
-    #model.add(Conv2D(32,(5,5), padding="SAME", activation="relu", input_shape=(150,150,3)))
-    #model.add(Rescaling(1./255, input_shape=input_shape))
-
-    model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
-    model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
-    model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(32,kernel_size=(3,3), padding="SAME", activation="relu", input_shape=(150,150,3)))
+    model.add(Conv2D(32,kernel_size=(3,3), padding="SAME", activation="relu"))
+    model.add(Conv2D(32,kernel_size=(3,3), padding="SAME", activation="relu"))
     model.add(MaxPooling2D(2,2))
-    model.add(Dropout(0.2))
-
-    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(MaxPooling2D(2,2))
-    model.add(Dropout(0.2))
-
-    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(MaxPooling2D(2))
-    model.add(Dropout(0.2))
-
-    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
-    model.add(MaxPooling2D(2))
-    model.add(Dropout(0.2))
-
-    model.add(Flatten())
-
-    model.add(Dense(512, activation='relu'))
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Dense(4,kernel_regularizer=reg, bias_regularizer=reg, activation="softmax"))
-    #model.summary()
+    #model.add(Rescaling(1./255, input_shape=input_shape))
 
-    # model = Sequential()
-    # model.add(Conv2D(32,(5,5), padding="SAME", activation="relu", input_shape=(150,150,3)))
-    # #model.add(Rescaling(1./255, input_shape=input_shape))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
 
-    # model.add(Conv2D(32, kernel_size=(3,3), padding='same', activation='relu'))
-    # model.add(MaxPooling2D(2,2))
-    # model.add(Dropout(0.2))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
 
-    # model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation="relu"))
-    # model.add(MaxPooling2D(2,2))
-    # model.add(Dropout(0.2))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
 
-    # model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
     # model.add(MaxPooling2D(2))
+    # model.add(BatchNormalization())
     # model.add(Dropout(0.2))
 
-    # model.add(Flatten())
+    model.add(Flatten())
 
-    # model.add(Dense(128, activation='relu'))
-    # model.add(BatchNormalization())
-    # model.add(Dropout(0.5))
+    model.add(Dense(2048, activation='relu'))
+    #model.add(Dense(4096, activation='relu'))
+    model.add(Dropout(0.5))
 
-    # model.add(Dense(4,kernel_regularizer=reg, bias_regularizer=reg, activation="softmax"))
-    # model.summary()
+
+    model.add(Dense(4,kernel_regularizer=reg, bias_regularizer=reg, activation="softmax"))
+
 
     print("✅ Model initialized")
     print(model.summary)
