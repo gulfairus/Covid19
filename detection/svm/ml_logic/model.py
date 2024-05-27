@@ -51,30 +51,30 @@ def initialize_model(input_shape: tuple) -> Model:
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
     model.add(MaxPooling2D(2,2))
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
     model.add(MaxPooling2D(2))
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
     model.add(MaxPooling2D(2))
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
 
-    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
-    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu", kernel_regularizer=reg))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
     model.add(MaxPooling2D(2))
     model.add(BatchNormalization())
     model.add(Dropout(0.2))
@@ -93,7 +93,7 @@ def initialize_model(input_shape: tuple) -> Model:
     model.add(Dropout(0.5))
 
 
-    model.add(Dense(4,kernel_regularizer=reg, activation="softmax"))
+    model.add(Dense(4, activation="softmax"))
 
 
     print("✅ Model initialized")
