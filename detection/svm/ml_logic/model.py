@@ -93,7 +93,7 @@ def initialize_model(input_shape: tuple) -> Model:
     model.add(Dropout(0.5))
 
 
-    model.add(Dense(4,kernel_regularizer=reg, bias_regularizer=reg, activation="softmax"))
+    model.add(Dense(4,kernel_regularizer=reg, activation="softmax"))
 
 
     print("✅ Model initialized")
