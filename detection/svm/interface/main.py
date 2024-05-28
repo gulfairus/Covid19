@@ -48,9 +48,9 @@ def preprocess() -> None:
 
 @mlflow_run
 def train(
-        learning_rate=0.0005,
+        learning_rate=0.0001,
         batch_size = 32,
-        patience = 2,
+        patience = 3,
         epochs=50
     ) -> float:
 
@@ -75,7 +75,7 @@ def train(
     if model is None:
         model = initialize_model(input_shape=(150,150,3))
 
-    model = compile_model(model, learning_rate=0.0001)
+    model = compile_model(model, learning_rate=learning_rate)
     model, history = train_model(
         model, train_data=train_generator, batch_size=batch_size,
         patience=patience,validation_data=validation_generator, epochs=epochs
