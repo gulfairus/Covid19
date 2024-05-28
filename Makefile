@@ -10,6 +10,9 @@ run_preprocess_svm:
 run_train_svm:
 	python -c 'from detection.svm.interface.main import train; train()'
 
+run_train_xgboost:
+	python -c 'from detection.xgboost.interface.main import train; train()'
+
 run_train_cnn_scratch:
 	python -c 'from detection.cnn_scratch.interface.main import train; train()'
 
