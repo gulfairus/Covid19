@@ -24,11 +24,11 @@ import random
 from detection.params import *
 
 
-from detection.xgboost.ml_logic.data import load_data_to_bq
-from detection.xgboost.ml_logic.model import initialize_model, compile_model, train_model, evaluate_model
-from detection.xgboost.ml_logic.preprocessor import preprocess_data
-from detection.xgboost.ml_logic.registry import load_model, save_model, save_results
-from detection.xgboost.ml_logic.registry import mlflow_run, mlflow_transition_model
+from detection.cnn_scratch.ml_logic.data import load_data_to_bq
+from detection.cnn_scratch.ml_logic.model import initialize_model, intermediate_model, compile_model, train_model, evaluate_model
+from detection.cnn_scratch.ml_logic.preprocessor import preprocess_data
+from detection.cnn_scratch.ml_logic.registry import load_model, save_model, save_results
+from detection.cnn_scratch.ml_logic.registry import mlflow_run, mlflow_transition_model
 
 def preprocess() -> None:
     #storage_client = storage.Client(GCP_PROJECT)
@@ -48,10 +48,11 @@ def preprocess() -> None:
 
 #@mlflow_run
 def train(
-        learning_rate=0.0005,
+        learning_rate=0.0001,
         batch_size = 32,
         patience = 2,
-        epochs=50
+        epochs=50,
+        layer_name='dense'
     ) -> float:
 
     """
@@ -68,22 +69,15 @@ def train(
 
     train_generator, validation_generator, test_generator = preprocess_data()
 
-    it = Iterator(["file_0.svm", "file_1.svm", "file_2.svm"])
-    Xy = xgboost.DMatrix(it)
-
-    # The ``approx`` also work, but with low performance. GPU implementation is different from CPU.
-    # as noted in following sections.
-    booster = xgboost.train({"tree_method": "hist"}, Xy)
-
-
 
     # Train model using `model.py`
     model = load_model()
 
     if model is None:
-        model = initialize_model(input_shape=(150,150,3))
+        model = initialize_model(input_shape=(150,150,3), layer_name=layer_name)
 
-    model = compile_model(model, learning_rate=0.0001)
+    model = intermediate_model(model, layer_name=layer_name)
+    model = compile_model(model, learning_rate=learning_rate)
     model, history = train_model(
         model, train_data=train_generator, batch_size=batch_size,
         patience=patience,validation_data=validation_generator, epochs=epochs
@@ -176,7 +170,7 @@ def pred(X_pred: pd.DataFrame = None) -> np.ndarray:
 
 
 if __name__ == '__main__':
-    preprocess()
+    #preprocess()
     train()
     evaluate()
     pred()

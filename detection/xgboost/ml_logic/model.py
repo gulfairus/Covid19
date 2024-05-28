@@ -10,7 +10,7 @@ start = time.perf_counter()
 
 from tensorflow import keras
 from keras import Model, Sequential, layers, regularizers, optimizers
-from keras.callbacks import EarlyStopping
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.models import Sequential
 import tensorflow
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Dropout, Flatten, Dense, BatchNormalization
@@ -24,24 +24,86 @@ print(f"\n✅ TensorFlow loaded ({round(end - start, 2)}s)")
 
 
 
-def initialize_model(input_shape: tuple) -> Model:
+def initialize_model(input_shape: tuple, layer_name) -> Model:
     """
     Initialize the Neural Network with random weights
     """
-    #input data
-    x=df.iloc[:,:-1]
-    #output data
-    y=df.iloc[:,-1]
+    reg = regularizers.l2(0.001)
 
-    # it = Iterator(["file_0.svm", "file_1.svm", "file_2.svm"])
-    # Xy = xgboost.DMatrix(it)
+    model = Sequential()
+    model.add(Conv2D(32,kernel_size=(3,3), padding="SAME", activation="relu", input_shape=(150,150,3)))
+    model.add(Conv2D(32,kernel_size=(3,3), padding="SAME", activation="relu"))
+    model.add(Conv2D(32,kernel_size=(3,3), padding="SAME", activation="relu"))
+    model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
 
-    # # The ``approx`` also work, but with low performance. GPU implementation is different from CPU.
-    # # as noted in following sections.
-    # booster = xgboost.train({"tree_method": "hist"}, Xy)
+    #model.add(Rescaling(1./255, input_shape=input_shape))
 
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(Conv2D(64, kernel_size=(3,3), padding='same', activation='relu'))
+    model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(128, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2,2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(256, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(512, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(Conv2D(1024, kernel_size=(3,3), padding='same', activation="relu"))
+    model.add(MaxPooling2D(2))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.2))
+
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(Conv2D(2048, kernel_size=(3,3), padding='same', activation="relu"))
+    # model.add(MaxPooling2D(2))
+    # model.add(BatchNormalization())
+    # model.add(Dropout(0.2))
+
+    model.add(Flatten())
+
+    model.add(Dense(2048, activation='relu', name=layer_name))
+    #model.add(Dense(4096, activation='relu'))
+    model.add(Dropout(0.5))
+
+
+    model.add(Dense(4, activation="softmax"))
+
+
+    print("✅ Model initialized")
+    print(model.summary)
 
     return model
+
+def intermediate_model(model: Model, layer_name):
+    intermediate_layer_model = Model(inputs=model.input,
+                                 outputs=model.get_layer(layer_name).output)
+
+    print("✅ intermediate_layer_model initialized")
+    return intermediate_layer_model
+
 
 #Compile the CNN
 def compile_model(model: Model, learning_rate) -> Model:
@@ -70,9 +132,19 @@ def train_model(
     es = EarlyStopping(
         monitor="val_loss",
         patience=patience,
+        min_delta=.01,
+        mode='auto',
         restore_best_weights=True,
-        verbose=1
+        verbose=1,
+        start_from_epoch = 10
     )
+
+    rlr = ReduceLROnPlateau( monitor="val_loss",
+                            factor=0.2,
+                            patience=patience,
+                            verbose=0,
+                            mode="auto",
+                            min_delta=0.001)
 
     #steps = len(train_names)//batch_size
 
