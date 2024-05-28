@@ -52,7 +52,7 @@ def train(
         batch_size = 32,
         patience = 2,
         epochs=50,
-        layer_name='dense'
+        layer_name='model_dense'
     ) -> float:
 
     """
