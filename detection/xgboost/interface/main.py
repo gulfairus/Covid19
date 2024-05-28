@@ -24,11 +24,11 @@ import random
 from detection.params import *
 
 
-from detection.cnn_scratch.ml_logic.data import load_data_to_bq
-from detection.cnn_scratch.ml_logic.model import initialize_model, intermediate_model, compile_model, train_model, evaluate_model
-from detection.cnn_scratch.ml_logic.preprocessor import preprocess_data
-from detection.cnn_scratch.ml_logic.registry import load_model, save_model, save_results
-from detection.cnn_scratch.ml_logic.registry import mlflow_run, mlflow_transition_model
+from detection.xgboost.ml_logic.data import load_data_to_bq
+from detection.xgboost.ml_logic.model import initialize_model, intermediate_model, compile_model, train_model, evaluate_model
+from detection.xgboost.ml_logic.preprocessor import preprocess_data
+from detection.xgboost.ml_logic.registry import load_model, save_model, save_results
+from detection.xgboost.ml_logic.registry import mlflow_run, mlflow_transition_model
 
 def preprocess() -> None:
     #storage_client = storage.Client(GCP_PROJECT)
