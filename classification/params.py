@@ -24,14 +24,10 @@ GAR_IMAGE = os.environ.get("GAR_IMAGE")
 GAR_MEMORY = os.environ.get("GAR_MEMORY")
 #DATA_SOURCE = os.environ.get("DATA_SOURCE")
 ##################  CONSTANTS  #####################
-LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "covid19", "data")
-LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "covid19", "training_outputs")#
+LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".database", "lung_cancer", "data")
+LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".database", "lung_cancer", "training_outputs")#
 
-# TRAIN_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train"
-# TEST_DATA_PATH = "/home/user/Covid19/raw_data/cloud/train_test/train_test/test"
-#TRAIN_NORM_PATH_CLOUD = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train_val/train_val/train_val_norm"
-#TRAIN_OTHER_PATH_CLOUD = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train_val/train_val/train"
-#VAL_DATA_PATH_CLOUD = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train_val/val"
+
 TRAIN_DATA_PATH_CLOUD = "/home/user/Covid19/raw_data/cloud/train_test/train_test/train"
 TEST_DATA_PATH_CLOUD = "/home/user/Covid19/raw_data/cloud/train_test/train_test/test"
 
@@ -44,19 +40,7 @@ VAL_DATA_PATH = "/home/user/code/gulfairus/Covid19/raw_data/cloud/train_test/tra
 TF_ENABLE_ONEDNN_OPTS = os.environ.get("TF_ENABLE_ONEDNN_OPTS")
 
 
-COLUMN_NAMES_RAW = ['fare_amount','pickup_datetime', 'pickup_longitude', 'pickup_latitude', 'dropoff_longitude', 'dropoff_latitude', 'passenger_count']
 
-DTYPES_RAW = {
-    "fare_amount": "float32",
-    "pickup_datetime": "datetime64[ns, UTC]",
-    "pickup_longitude": "float32",
-    "pickup_latitude": "float32",
-    "dropoff_longitude": "float32",
-    "dropoff_latitude": "float32",
-    "passenger_count": "int16"
-}
-
-DTYPES_PROCESSED = np.float32
 
 
 

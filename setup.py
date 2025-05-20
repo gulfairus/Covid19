@@ -5,12 +5,12 @@ with open("requirements.txt") as f:
     content = f.readlines()
 requirements = [x.strip() for x in content if "git+" not in x]
 
-setup(name='detection',
+setup(name='classification',
       version="0.0.10",
-      description="Detection Covid19 from chest X-ray",
+      description="Classification lung diseases of chest X-ray images",
       license="MIT",
-      author="Le Wagon",
-      author_email="contact@lewagon.org",
+      author="gulfairus",
+      author_email="gulfairuskairedenova@gmail.com",
       #url="https://github.com/lewagon/taxi-fare",
       install_requires=requirements,
       packages=find_packages(),
